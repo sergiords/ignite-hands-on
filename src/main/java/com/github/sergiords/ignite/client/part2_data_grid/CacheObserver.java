@@ -26,12 +26,11 @@ public class CacheObserver implements Runnable {
         }
 
         System.out.printf("===== Cache Info for: %s =====%n", cache.getName());
-        System.out.println("\t10 cache values: " + read10CacheData());
-        System.out.println("\tCache size: " + getCacheSize());
-        System.out.println("\tCache size per node: " + getCacheSizePerNode());
-        System.out.println("\tPrimary cache size per node: " + getPrimaryCacheSizePerNode());
-        System.out.println("\tBackup cache size per node: " + getBackupCacheSizePerNode());
-
+        System.out.println("10 cache values: " + read10CacheData());
+        System.out.println("Cache size: " + getCacheSize());
+        System.out.println("Cache size per node: " + getCacheSizePerNode());
+        System.out.println("Primary cache size per node: " + getPrimaryCacheSizePerNode());
+        System.out.println("Backup cache size per node: " + getBackupCacheSizePerNode());
     }
 
     private void write1000CacheData() {

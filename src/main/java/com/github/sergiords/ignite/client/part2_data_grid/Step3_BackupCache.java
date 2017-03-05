@@ -10,6 +10,7 @@ public class Step3_BackupCache implements ClientStep {
     private static final String CACHE_NAME = "my-backup-cache";
 
     private final Ignite ignite;
+
     private IgniteCache<String, String> cache;
 
     public Step3_BackupCache(Ignite ignite) {

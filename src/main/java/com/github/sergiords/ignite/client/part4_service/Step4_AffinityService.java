@@ -2,9 +2,8 @@ package com.github.sergiords.ignite.client.part4_service;
 
 import com.github.sergiords.ignite.client.ClientStep;
 import org.apache.ignite.Ignite;
-import org.apache.ignite.IgniteCache;
 
-@SuppressWarnings({"unused", "FieldCanBeLocal", "ConstantConditions"})
+@SuppressWarnings({"unused", "ConstantConditions"})
 public class Step4_AffinityService implements ClientStep {
 
     private static final String CACHE_NAME = "my-affinity-service-cache";
@@ -12,8 +11,6 @@ public class Step4_AffinityService implements ClientStep {
     private static final String SERVICE_NAME = "/my-affinity-service/key42";
 
     private final Ignite ignite;
-
-    private final IgniteCache<String, String> cache;
 
     public Step4_AffinityService(Ignite ignite) {
 
@@ -23,7 +20,6 @@ public class Step4_AffinityService implements ClientStep {
          * TODO:
          * - create a partitioned cache named "my-affinity-service-cache" just like in Step1_PartitionedCache
          */
-        this.cache = null;
 
         /*
          * TODO:
