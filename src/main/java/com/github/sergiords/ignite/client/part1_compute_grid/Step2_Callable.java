@@ -34,7 +34,7 @@ public class Step2_Callable implements ClientStep {
 
         /*
          * TODO:
-         * - get and return the uppercase value of System.getProperty("node.id") from only one node
+         * - return the uppercase value of System.getProperty("node.id") from only one node
          * - see IgniteCompute#call
          */
         return null;
@@ -44,10 +44,8 @@ public class Step2_Callable implements ClientStep {
 
         /*
          * TODO:
-         * - get and return the percentage of available memory from each node
-         * - use Runtime.getRuntime().freeMemory()
-         * - use Runtime.getRuntime().totalMemory()
-         * - see IgniteCompute#broadcast
+         * - return the free memory from alls node
+         * - use Runtime.getRuntime().freeMemory() and IgniteCompute#broadcast
          */
         return null;
     }
@@ -56,11 +54,9 @@ public class Step2_Callable implements ClientStep {
 
         /*
          * TODO:
-         * - get and return uppercase thread name from a first node and lowercase thread name from a second node
-         * - use Thread.currentThread().getName()
-         * - see IgniteCompute#call
+         * - return uppercase thread name from a first node and lowercase thread name from a second node
+         * - use Thread.currentThread().getName() and IgniteCompute#call
          */
-
         return null;
     }
 

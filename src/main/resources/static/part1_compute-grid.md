@@ -69,6 +69,18 @@ Part1_Step2
 ```
 
 =========
+## Step1_Callable: checks
+
+Every execution should retrieve and print on client console:
+
+- **nodeId** from **one node**
+
+- **free memory** from **all nodes**
+
+- **Thread name** from **two nodes**
+
+
+=========
 ## Spot the difference
 
 Can you spot the difference between case 1 and 2 ?
