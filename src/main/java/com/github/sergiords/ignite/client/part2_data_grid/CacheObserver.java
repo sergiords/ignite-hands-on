@@ -2,10 +2,14 @@ package com.github.sergiords.ignite.client.part2_data_grid;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
+import org.apache.ignite.cache.CachePeekMode;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-@SuppressWarnings({"unused", "FieldCanBeLocal", "InfiniteLoopStatement"})
+import static java.util.stream.IntStream.range;
+
 public class CacheObserver implements Runnable {
 
     private final Ignite ignite;
@@ -39,6 +43,7 @@ public class CacheObserver implements Runnable {
          * TODO:
          * - put 1000 entries in the cache in the following format: "Key1"=>"Value1", "Key2"=>"Value2", ...
          */
+        range(0, 1_000).forEach(n -> cache.put("Key" + n, "Value" + n));
     }
 
     private Map<String, String> read10CacheData() {
@@ -47,7 +52,7 @@ public class CacheObserver implements Runnable {
          * TODO:
          * - get and return the 10 values associated to keys [Key50;Key59] in the cache in one call
          */
-        return null;
+        return cache.getAll(range(50, 60).mapToObj(n -> "Key" + n).collect(Collectors.toSet()));
     }
 
     private Integer getCacheSize() {
@@ -57,7 +62,7 @@ public class CacheObserver implements Runnable {
          * - return cluster-wide cache size
          * - see IgniteCache#size
          */
-        return null;
+        return cache.size();
     }
 
     private Map<String, Integer> getCacheSizePerNode() {
@@ -68,7 +73,9 @@ public class CacheObserver implements Runnable {
          * - see IgniteCache#localSize
          * - retrieve NodeId using System.getProperty("node.id")
          */
-        return null;
+        return ignite.compute()
+            .broadcast(() -> new HashMap.SimpleEntry<>(System.getProperty("node.id"), cache.localSize()))
+            .stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     private Map<String, Integer> getPrimaryCacheSizePerNode() {
@@ -79,7 +86,10 @@ public class CacheObserver implements Runnable {
          * - see IgniteCache#localSize
          * - retrieve NodeId using System.getProperty("node.id")
          */
-        return null;
+
+        return ignite.compute()
+            .broadcast(() -> new HashMap.SimpleEntry<>(System.getProperty("node.id"), cache.localSize(CachePeekMode.PRIMARY)))
+            .stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     private Map<String, Integer> getBackupCacheSizePerNode() {
@@ -90,7 +100,9 @@ public class CacheObserver implements Runnable {
          * - see IgniteCache#localSize
          * - retrieve NodeId using System.getProperty("node.id")
          */
-        return null;
+        return ignite.compute()
+            .broadcast(() -> new HashMap.SimpleEntry<>(System.getProperty("node.id"), cache.localSize(CachePeekMode.BACKUP)))
+            .stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
 }

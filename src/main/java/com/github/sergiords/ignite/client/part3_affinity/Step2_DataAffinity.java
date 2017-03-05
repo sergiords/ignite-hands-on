@@ -4,14 +4,24 @@ import com.github.sergiords.ignite.client.ClientStep;
 import com.github.sergiords.ignite.data.AffinityData;
 import com.github.sergiords.ignite.data.Team;
 import com.github.sergiords.ignite.data.User;
+import kotlin.Pair;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
+import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.cache.affinity.AffinityKey;
+import org.apache.ignite.configuration.CacheConfiguration;
 
+import javax.cache.Cache;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-@SuppressWarnings({"unused", "ConstantConditions", "FieldCanBeLocal"})
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+
 public class Step2_DataAffinity implements ClientStep {
 
     private static final String CACHE_NAME = "my-data-affinity-cache";
@@ -28,7 +38,9 @@ public class Step2_DataAffinity implements ClientStep {
          * TODO:
          * - create a partitioned cache named "my-data-affinity-cache" just like in Step1_PartitionedCache
          */
-        this.cache = null;
+        CacheConfiguration<AffinityKey<Team>, List<User>> configuration = new CacheConfiguration<>(CACHE_NAME);
+        configuration.setCacheMode(CacheMode.PARTITIONED);
+        this.cache = ignite.getOrCreateCache(configuration);
     }
 
     @Override
@@ -54,7 +66,7 @@ public class Step2_DataAffinity implements ClientStep {
          * - return a new affinity key using team's country as the affinity key discriminator
          * - use new AffinityKey(...)
          */
-        return null;
+        return new AffinityKey<>(team, team.getCountry());
     }
 
     private void populateCache() {
@@ -66,6 +78,7 @@ public class Step2_DataAffinity implements ClientStep {
          * - use AffinityData#teams to find teams
          * - use AffinityData#users to find users for a team
          */
+        AffinityData.teams().forEach(team -> cache.put(affinityKey(team), AffinityData.users(team)));
     }
 
     private Map<String, List<Team>> findTeamsByNode() {
@@ -80,7 +93,19 @@ public class Step2_DataAffinity implements ClientStep {
          * - unfortunately localCacheEntries returns an Iterable... that's annoying
          * - use StreamSupport.stream(myIterator.spliterator(), false) to get a plain-old stream
          */
-        return null;
+        return ignite.compute()
+            .broadcast(() -> {
+
+                String nodeId = System.getProperty("node.id");
+
+                List<Team> teams = StreamSupport.stream(cache.localEntries().spliterator(), false)
+                    .map(Cache.Entry::getKey)
+                    .map(AffinityKey::key)
+                    .collect(toList());
+
+                return new Pair<>(nodeId, teams);
+            })
+            .stream().collect(toMap(Pair::getFirst, Pair::getSecond));
     }
 
     private List<User> topCommitterFromCountry(String country) {
@@ -93,8 +118,13 @@ public class Step2_DataAffinity implements ClientStep {
          * - unfortunately localCacheEntries returns an Iterable... that's annoying
          * - use StreamSupport.stream(myIterator.spliterator(), false) to get a plain-old stream
          */
-
-        return null;
+        return ignite.compute().affinityCall(CACHE_NAME, country, () ->
+            StreamSupport.stream(cache.localEntries().spliterator(), false)
+                .filter(entry -> entry.getKey().key().getCountry().equals(country))
+                .map(entry -> entry.getValue().stream().max(comparing(User::getCommits)))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList()));
     }
 
     @Override

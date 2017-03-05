@@ -1,5 +1,6 @@
 package com.github.sergiords.ignite.client;
 
+import com.github.sergiords.ignite.Config;
 import com.github.sergiords.ignite.client.part1_compute_grid.Step1_Runnable;
 import com.github.sergiords.ignite.client.part1_compute_grid.Step2_Callable;
 import com.github.sergiords.ignite.client.part2_data_grid.Step1_PartitionedCache;
@@ -17,6 +18,8 @@ import com.github.sergiords.ignite.client.part5_messaging.Step2_Event;
 import com.github.sergiords.ignite.client.part6_cluster.Step1_Cluster;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCompute;
+import org.apache.ignite.Ignition;
+import org.apache.ignite.configuration.IgniteConfiguration;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,7 +30,6 @@ import java.util.function.Function;
 
 import static java.util.stream.Collectors.joining;
 
-@SuppressWarnings("ConstantConditions")
 public class ClientApp {
 
     public static void main(String[] args) throws IOException {
@@ -38,7 +40,9 @@ public class ClientApp {
          * - configure this ignite instance in client mode
          * - this instance is going to be injected in all hands on Steps
          */
-        Ignite ignite = null;
+        IgniteConfiguration igniteConfiguration = Config.igniteConfiguration();
+        igniteConfiguration.setClientMode(true);
+        Ignite ignite = Ignition.start(igniteConfiguration);
 
         /*
          * ===========================================================

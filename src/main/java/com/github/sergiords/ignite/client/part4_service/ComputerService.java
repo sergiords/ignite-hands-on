@@ -25,7 +25,7 @@ public class ComputerService implements Computer, Service {
          * TODO:
          * - return the sum of all args
          */
-        return null;
+        return Stream.of(args).mapToInt(Integer::intValue).sum();
     }
 
     @Override

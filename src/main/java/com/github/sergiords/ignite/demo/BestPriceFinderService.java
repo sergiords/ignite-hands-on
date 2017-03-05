@@ -4,16 +4,24 @@ import com.github.sergiords.ignite.data.Station;
 import com.github.sergiords.ignite.data.TrainServer;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
+import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.cluster.ClusterNode;
+import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.services.Service;
 import org.apache.ignite.services.ServiceContext;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-@SuppressWarnings({"StatementWithEmptyBody", "ConstantConditions", "FieldCanBeLocal", "unused"})
+import static java.lang.String.format;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
+
 public class BestPriceFinderService implements BestPriceFinder, Service {
 
     static final String CACHE_NAME = "price-cache";
@@ -33,7 +41,9 @@ public class BestPriceFinderService implements BestPriceFinder, Service {
          * TODO:
          * - create a partitioned cache named "price-cache"
          */
-        this.priceCache = null;
+        CacheConfiguration<String, List<BestPrice>> configuration = new CacheConfiguration<>(CACHE_NAME);
+        configuration.setCacheMode(CacheMode.PARTITIONED);
+        this.priceCache = ignite.getOrCreateCache(configuration);
     }
 
     @Override
@@ -64,6 +74,15 @@ public class BestPriceFinderService implements BestPriceFinder, Service {
                              * - increment loadedEntries counter
                              */
 
+                            List<BestPrice> bestPrices = trainServer.trains(origin, destination, date).stream()
+                                .flatMap(train -> trainServer.prices(train).stream()
+                                    .map(price -> new BestPrice(train, price)))
+                                .collect(Collectors.toList());
+
+                            priceCache.put(key, bestPrices);
+
+                            loadedEntries.incrementAndGet();
+
                         } else {
 
                             /*
@@ -71,6 +90,8 @@ public class BestPriceFinderService implements BestPriceFinder, Service {
                              * - do not load cache data since this node is not primary for this key
                              * - increment skippedEntries counter
                              */
+
+                            skippedEntries.incrementAndGet();
                         }
                     })));
 
@@ -89,7 +110,7 @@ public class BestPriceFinderService implements BestPriceFinder, Service {
          * - return a key containing origin, destination and formatted date
          * - this key will be used to store prices in cache
          */
-        return null;
+        return format("%s-%s-%s", origin, destination, date.format(ISO_LOCAL_DATE));
     }
 
     @Override
@@ -105,7 +126,12 @@ public class BestPriceFinderService implements BestPriceFinder, Service {
          * - filter prices with enough seats
          * - return best price (min) amongst filtered prices
          */
-        return null;
+        return Optional
+            .ofNullable(priceCache.get(key))
+            .map(Collection::stream)
+            .orElseGet(Stream::empty)
+            .filter(bestPrice -> bestPrice.getSeats() >= seats)
+            .min(Comparator.comparingInt(BestPrice::getPrice));
     }
 
     @Override

@@ -6,14 +6,18 @@ import com.github.sergiords.ignite.data.Team;
 import com.github.sergiords.ignite.data.User;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
+import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.cache.affinity.Affinity;
+import org.apache.ignite.cluster.ClusterGroup;
 import org.apache.ignite.cluster.ClusterNode;
+import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.lang.IgniteCallable;
 
 import java.util.List;
 import java.util.Optional;
 
-@SuppressWarnings({"unused", "ConstantConditions", "FieldCanBeLocal"})
+import static java.util.Comparator.comparing;
+
 public class Step1_ComputeAffinity implements ClientStep {
 
     private static final String CACHE_NAME = "my-compute-affinity-cache";
@@ -32,7 +36,9 @@ public class Step1_ComputeAffinity implements ClientStep {
          * TODO:
          * - create a partitioned cache named "my-compute-affinity-cache" just like in Step1_PartitionedCache
          */
-        this.cache = null;
+        CacheConfiguration<Team, List<User>> configuration = new CacheConfiguration<>(CACHE_NAME);
+        configuration.setCacheMode(CacheMode.PARTITIONED);
+        this.cache = ignite.getOrCreateCache(configuration);
 
         /*
          * TODO:
@@ -40,6 +46,7 @@ public class Step1_ComputeAffinity implements ClientStep {
          * - use AffinityData#teams to find teams
          * - use AffinityData#users to find users for a team
          */
+        AffinityData.teams().forEach(team -> cache.put(team, AffinityData.users(team)));
 
         /*
          * TODO:
@@ -47,7 +54,7 @@ public class Step1_ComputeAffinity implements ClientStep {
          * - affinity is a function telling in which node keys are stored
          * - use Ignite#affinity
          */
-        this.affinity = null;
+        this.affinity = ignite.affinity(CACHE_NAME);
     }
 
     @Override
@@ -74,7 +81,6 @@ public class Step1_ComputeAffinity implements ClientStep {
         System.out.printf("AffinityCall returned nodeId %s%n", nodeIdForKey);
         System.out.printf("Team %s has TopCommitter %s [Result from targeted node]%n", team, resultFromNode);
         System.out.printf("Team %s has TopCommitter %s [Result from affinityCall]%n", team, resultFromAffinity);
-
     }
 
     private int findPartition(Team team) {
@@ -84,7 +90,7 @@ public class Step1_ComputeAffinity implements ClientStep {
          * - return the partition associated to the given team
          * - use Affinity#partition
          */
-        return 0;
+        return affinity.partition(team);
     }
 
     private ClusterNode findNode(int partition) {
@@ -94,7 +100,7 @@ public class Step1_ComputeAffinity implements ClientStep {
           * - return ClusterNode associated to the given partition (the primary node)
           * - use Affinity#mapPartitionTo..
          */
-        return null;
+        return affinity.mapPartitionToNode(partition);
     }
 
     private ClusterNode findNode(Team team) {
@@ -105,7 +111,7 @@ public class Step1_ComputeAffinity implements ClientStep {
          * - this method is a shortcut of the two previous methods implemented above
          * - use Affinity#mapKeyTo...
          */
-        return null;
+        return affinity.mapKeyToNode(team);
     }
 
     private String findNodeId(Team team) {
@@ -126,7 +132,9 @@ public class Step1_ComputeAffinity implements ClientStep {
          * - use findNode to find ClusterNode where team is stored
          * - use IgniteCluster#forNode to get ClusterGroup for this ClusterNode
          */
-        return null;
+        ClusterNode node = findNode(team);
+        ClusterGroup clusterGroup = ignite.cluster().forNode(node);
+        return ignite.compute(clusterGroup).call(topCommitterCallable(team));
     }
 
     private Optional<User> executeWithCacheAffinity(Team team) {
@@ -136,7 +144,7 @@ public class Step1_ComputeAffinity implements ClientStep {
          * - return topCommitter for the given team using an IgniteCompute#affinityCall
          * - this method is a shortcut of the previous methods used (ClusterNode -> ClusterGroup -> IgniteCompute#Call)
          */
-        return null;
+        return ignite.compute().affinityCall(CACHE_NAME, team, topCommitterCallable(team));
     }
 
     private IgniteCallable<Optional<User>> topCommitterCallable(Team team) {
@@ -146,7 +154,7 @@ public class Step1_ComputeAffinity implements ClientStep {
          * - return an IgniteCallable which returns the user from the given team wo has the most commits
          * - use the cache to find users in the team
          */
-        return null;
+        return () -> cache.get(team).stream().max(comparing(User::getCommits));
     }
 
     @Override

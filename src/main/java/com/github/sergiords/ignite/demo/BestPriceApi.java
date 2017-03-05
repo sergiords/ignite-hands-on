@@ -20,7 +20,7 @@ import static com.github.sergiords.ignite.demo.BestPriceFinderService.CACHE_NAME
 import static java.util.stream.Collectors.toList;
 
 @RestController
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
+@SuppressWarnings({"unused"})
 public class BestPriceApi {
 
     private static final String SERVICE_NAME = "best-price-service";
@@ -35,6 +35,7 @@ public class BestPriceApi {
          * TODO:
          * - deploy an instance of the given service in each server node (Node Singleton Service)
          */
+        ignite.services().deployNodeSingleton(SERVICE_NAME, bestPriceFinderService);
     }
 
     @GetMapping("/{origin}/{destination}/{begin}/{end}")
@@ -50,7 +51,7 @@ public class BestPriceApi {
             .iterate(begin, date -> date.plusDays(1))
             .limit(ChronoUnit.DAYS.between(begin, end) + 1) // all dates in [begin; end]
             .parallel() // important, since all calls must be dispatched to concurrently-running nodes
-            .<Optional<BestPrice>>map(date -> {
+            .map(date -> {
 
                 String key = BestPriceFinderService.getKey(origin, destination, date);
 
@@ -59,7 +60,14 @@ public class BestPriceApi {
                  * - return best price for key using an affinity call based on price cache and given key
                  * - affinityCall must rely on BestPriceFinderService locally deployed on each node to compute best price
                  */
-                return null;
+                return ignite.compute().affinityCall(CACHE_NAME, key, () -> {
+
+                    // local-node deployed service instance
+                    BestPriceFinder bestPriceFinder = ignite.services().service(SERVICE_NAME);
+
+                    return bestPriceFinder.bestPriceFor(origin, destination, date, seats);
+
+                });
             })
             .filter(Optional::isPresent) // do not show dates with no results
             .map(Optional::get)

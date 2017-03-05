@@ -5,7 +5,8 @@ import org.apache.ignite.Ignite;
 
 import java.util.Collection;
 
-@SuppressWarnings({"unused", "FieldCanBeLocal", "ConstantConditions"})
+import static java.util.Arrays.asList;
+
 public class Step2_Callable implements ClientStep {
 
     private final Ignite ignite;
@@ -34,30 +35,36 @@ public class Step2_Callable implements ClientStep {
 
         /*
          * TODO:
-         * - return the uppercase value of System.getProperty("node.id") from only one node
+         * - get and return the uppercase value of System.getProperty("node.id") from only one node
          * - see IgniteCompute#call
          */
-        return null;
+        return ignite.compute().call(() -> System.getProperty("node.id"));
     }
 
     private Collection<Long> getResultFromAllNodes() {
 
         /*
          * TODO:
-         * - return the free memory from alls node
-         * - use Runtime.getRuntime().freeMemory() and IgniteCompute#broadcast
+         * - get and return the percentage of available memory from each node
+         * - use Runtime.getRuntime().freeMemory()
+         * - use Runtime.getRuntime().totalMemory()
+         * - see IgniteCompute#broadcast
          */
-        return null;
+        return ignite.compute().broadcast(() -> Runtime.getRuntime().freeMemory());
     }
 
     private Collection<String> getResultFromTwoNodes() {
 
         /*
          * TODO:
-         * - return uppercase thread name from a first node and lowercase thread name from a second node
-         * - use Thread.currentThread().getName() and IgniteCompute#call
+         * - get and return uppercase thread name from a first node and lowercase thread name from a second node
+         * - use Thread.currentThread().getName()
+         * - see IgniteCompute#call
          */
-        return null;
+        return ignite.compute().call(asList(
+            () -> Thread.currentThread().getName().toUpperCase(),
+            () -> Thread.currentThread().getName().toLowerCase()
+        ));
     }
 
     @Override

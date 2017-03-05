@@ -16,7 +16,6 @@ import java.nio.file.Paths;
 
 import static java.util.stream.IntStream.range;
 
-@SuppressWarnings({"unused", "ConstantConditions", "UnusedAssignment"})
 public class Step4_StoredCache implements ClientStep {
 
     private static final String CACHE_NAME = "my-stored-cache";
@@ -41,7 +40,7 @@ public class Step4_StoredCache implements ClientStep {
          * - complete MyCacheStore class: this store read, write and delete cache values from files
          * - create a of Factory for MyCacheStore: this factory creates CacheStore instances across cluster nodes
          */
-        Factory<MyCacheStore> myCacheStoreFactory = null;
+        Factory<MyCacheStore> myCacheStoreFactory = () -> new MyCacheStore(basePath);
 
         /*
          * TODO:
@@ -51,7 +50,11 @@ public class Step4_StoredCache implements ClientStep {
          * - enable read-through and write-through
          * - create a cache using this configuration
          */
-        this.cache = null;
+        CacheConfiguration<String, String> configuration = new CacheConfiguration<>(CACHE_NAME);
+        configuration.setCacheStoreFactory(myCacheStoreFactory);
+        configuration.setReadThrough(true);
+        configuration.setWriteThrough(true);
+        this.cache = ignite.getOrCreateCache(configuration);
     }
 
     @Override
@@ -84,7 +87,7 @@ public class Step4_StoredCache implements ClientStep {
              * - use: new String(Files.readAllBytes(...)))
              */
             try {
-                throw new IOException("To be implemented");
+                return new String(Files.readAllBytes(Paths.get(basePath).resolve(Paths.get(key))));
             } catch (IOException e) {
                 throw new CacheLoaderException(e);
             }
@@ -99,7 +102,7 @@ public class Step4_StoredCache implements ClientStep {
              * - use: Files.write(..., value.getBytes()))
              */
             try {
-                throw new IOException("To be implemented");
+                Files.write(Paths.get(basePath).resolve(Paths.get(entry.getKey())), entry.getValue().getBytes());
             } catch (IOException e) {
                 throw new CacheWriterException(e);
             }
@@ -114,7 +117,7 @@ public class Step4_StoredCache implements ClientStep {
              * - use: Files.delete(...)
              */
             try {
-                throw new IOException("To be implemented");
+                Files.delete(Paths.get(basePath).resolve(String.valueOf(key)));
             } catch (IOException e) {
                 throw new CacheWriterException(e);
             }
