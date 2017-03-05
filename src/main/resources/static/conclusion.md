@@ -3,25 +3,39 @@
 =========
 ## Take Away
 
-- Data / Compute Grid
-- Data / Compute Affinity
-- Services
-- Clustering
+- Compute / Data Grid for **scalability**
+
+- Collocation / Transaction for **operational systems**
+
+- Grid toolbox
 
 =========
 ## Use Cases
 
-- In-Memory Computing
+- In-Memory platform / toolbox
 
-- Database inside Application ?
-    - Network bandwidth
-    - Complex Searches
+- Scalability / Elasticity / Partitioning
 
-=========
-## (Too) Much more
+- Complex Searches
 
 =========
-## BigData ?
+### SQL Grid
+
+![img](img/sql-grid.png)
+
+=========
+### In-Memory File System (IGFS)
+
+![img](img/spark-igfs.png)
+
+Hadoop FileSystem or Hadoop FileSystem Cache.
+
+=========
+## Spark RDD
+
+![img](img/spark-rdd.png)
+
+IgniteRDD as in-memory shared Spark RDDs.
 
 =========
 ## Thank You !

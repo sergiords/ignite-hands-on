@@ -1,8 +1,17 @@
 # Introduction
 
 =========
+## Apache Ignite
 ![img](img/ignite-big-picture.png)
 
-Data grid is an **in-memory distributed key-value store**.
+=========
+## Cluster
+![img](img/cluster.png)
 
 =========
+## Compute Grid
+![img](img/compute-grid.png)
+
+=========
+## Data Grid
+![img](img/data-grid.jpg)
