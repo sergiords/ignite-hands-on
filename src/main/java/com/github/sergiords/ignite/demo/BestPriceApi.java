@@ -34,7 +34,6 @@ public class BestPriceApi {
          * TODO:
          * - deploy an instance of the given service in each server node (Node Singleton Service)
          */
-        ignite.services().deployNodeSingleton(SERVICE_NAME, bestPriceFinderService);
     }
 
     @GetMapping("/{origin}/{destination}/{begin}/{end}")
