@@ -1,0 +1,92 @@
+<!doctype html>
+<!--suppress JSUnusedGlobalSymbols -->
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Ignite Hands On</title>
+
+    <link rel="stylesheet" href="/webjars/reveal.js/3.4.1/css/reveal.css">
+    <link rel="stylesheet" href="/webjars/reveal.js/3.4.1/css/theme/white.css">
+    <link rel="stylesheet" href="/webjars/reveal.js/3.4.1/lib/css/zenburn.css">
+
+    <script src="/webjars/reveal.js/3.4.1/lib/js/head.min.js"></script>
+    <script src="/webjars/reveal.js/3.4.1/js/reveal.js"></script>
+
+    <style>
+        .reveal pre {
+            width: 100%;
+        }
+
+        .reveal section p {
+            text-align: justify;
+        }
+
+        .reveal section code {
+            font-size: 70%;
+            line-height: 1em;
+            border: none;
+        }
+
+        .reveal section blockquote {
+            width: 100%;
+            box-shadow: none;
+            box-sizing: border-box;
+            border-left: thick solid lightgrey;
+            background-color: whitesmoke;
+        }
+
+        .reveal section img {
+            border: none;
+            box-shadow: none;
+            display: block;
+            margin-left: auto;
+            margin-right: auto
+        }
+    </style>
+</head>
+<body>
+
+<div class="reveal">
+
+    <div class="slides">
+        <section data-markdown="introduction.md" data-separator-vertical="========="></section>
+        <section data-markdown="index.md" data-separator-vertical="========="></section>
+        <section data-markdown="get-started.md" data-separator-vertical="========="></section>
+        <section data-markdown="part1_compute-grid.md" data-separator-vertical="========="></section>
+        <section data-markdown="part2_data-grid.md" data-separator-vertical="========="></section>
+        <section data-markdown="part3_affinity.md" data-separator-vertical="========="></section>
+        <section data-markdown="part4_service-grid.md" data-separator-vertical="========="></section>
+        <section data-markdown="part5_messaging.md" data-separator-vertical="========="></section>
+        <section data-markdown="part6_cluster.md" data-separator-vertical="========="></section>
+        <section data-markdown="demo.md" data-separator-vertical="========="></section>
+        <section data-markdown="conclusion.md" data-separator-vertical="========="></section>
+    </div>
+
+</div>
+
+<script>
+
+    Reveal.initialize({
+        history: true,
+        hideAddressBar: true,
+        dependencies: [
+            {src: '/webjars/reveal.js/3.4.1/plugin/markdown/marked.js'},
+            {src: '/webjars/reveal.js/3.4.1/plugin/markdown/markdown.js'},
+            {src: '/webjars/reveal.js/3.4.1/plugin/notes/notes.js', async: true},
+            {
+                src: '/webjars/reveal.js/3.4.1/plugin/highlight/highlight.js',
+                async: true,
+                callback: function () {
+                    hljs.initHighlightingOnLoad();
+                }
+            }
+        ]
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<!--suppress HtmlUnknownAttribute, XmlUnboundNsPrefix -->
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Demo: Train Best Price Calendar</title>
+
+    <link rel="stylesheet" href="/webjars/reveal.js/3.4.1/css/reveal.css">
+    <link rel="stylesheet" href="/webjars/reveal.js/3.4.1/css/theme/white.css">
+    <link rel="stylesheet" href="/webjars/reveal.js/3.4.1/lib/css/zenburn.css">
+
+    <script src="/webjars/reveal.js/3.4.1/lib/js/head.min.js"></script>
+    <script src="/webjars/reveal.js/3.4.1/js/reveal.js"></script>
+    <script src="/webjars/vue/2.2.1/dist/vue.min.js"></script>
+
+    <style>
+        td.fail {
+            background-color: orangered;
+        }
+
+        td.pass {
+            background-color: lightgreen;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="reveal">
+
+    <div id="app" class="slides">
+
+        <section v-for="query in queries">
+            <h4>{{query.url}}</h4>
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Price</th>
+                    <th>Time</th>
+                </tr>
+                <tr v-for="bestPrice in query.bestPrices">
+                    <td>{{bestPrice.date}}</td>
+                    <td v-if="bestPrice.price == bestPrice.computedPrice" class="pass">{{bestPrice.price}}</td>
+                    <td v-else class="fail">{{bestPrice.price}} != {{bestPrice.computedPrice}}</td>
+                    <td v-if="bestPrice.time == bestPrice.computedTime" class="pass">{{bestPrice.time}}</td>
+                    <td v-else class="fail">{{bestPrice.time}} != {{bestPrice.computedTime}}</td>
+                </tr>
+            </table>
+        </section>
+
+    </div>
+
+</div>
+
+<script>
+
+    Reveal.initialize({history: true, hideAddressBar: true});
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            queries: [{
+                url: "/FRPAR/GBLON/3001-01-01/3001-01-07?seats=5",
+                bestPrices: [
+                    {date: "3001-01-01", price: "115", computedPrice: "", time: "00:00", computedTime: ""},
+                    {date: "3001-01-02", price: "115", computedPrice: "", time: "00:00", computedTime: ""},
+                    {date: "3001-01-03", price: "115", computedPrice: "", time: "00:00", computedTime: ""},
+                    {date: "3001-01-04", price: "115", computedPrice: "", time: "00:00", computedTime: ""},
+                    {date: "3001-01-05", price: "115", computedPrice: "", time: "00:00", computedTime: ""},
+                    {date: "3001-01-06", price: "115", computedPrice: "", time: "00:00", computedTime: ""},
+                    {date: "3001-01-07", price: "115", computedPrice: "", time: "00:00", computedTime: ""}
+                ]
+            }]
+        }
+    });
+
+    app.queries.forEach(function (query) {
+        fetch(query.url)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (computedBestPrices) {
+                computedBestPrices.forEach(function (computedBestPrice) {
+                    var bestPrice = query.bestPrices.find(function (candidate) {
+                        return computedBestPrice.date == candidate.date;
+                    });
+                    if (bestPrice !== undefined) {
+                        bestPrice.computedPrice = computedBestPrice.price;
+                        bestPrice.computedTime = computedBestPrice.time;
+                    }
+                })
+            })
+    });
+
+</script>
+
+</body>
+</html>
