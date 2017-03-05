@@ -37,6 +37,11 @@ This class will be used in following steps to populate cache and observe data di
 =========
 ## Partitioned Cache
 
+![img](img/partitioned-cache.png)
+
+=========
+## Partitioned Cache
+
 **Partitioned Cache** entries are distributed across all cluster nodes.
 
 Complete **Step1_PartitionedCache** class.
@@ -62,6 +67,11 @@ Restart killed **server node**.
 ## Prevent data loss
 
 To prevent data loss while some nodes are still up we can use a **replicated cache**.
+
+=========
+## Replicated Cache
+
+![img](img/replicated-cache.png)
 
 =========
 ## Replicated Cache
