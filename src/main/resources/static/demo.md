@@ -12,12 +12,14 @@ For each combination of **origin**, **destination** and **date** there are many 
                        |FRPAR      |GBLON      |3001-01-01 |10:00      |
                        |FRPAR      |GBLON      |3001-01-01 |12:00      |
                        |FRPAR      |GBLON      |3001-01-02 |10:00      |
-                       |FRPAR      |NLAMS      |3001-01-02 |12:00      |
-                       |BEBRU      |NLAMS      |3001-01-01 |10:00      |
+                       |FRPAR      |GBCAM      |3001-01-02 |12:00      |
+                       |FRBDX      |GBCAM      |3001-01-01 |10:00      |
                        |...        |...        |...        |...        |
 ```
 
-> All dates are between 3001/01/01 and 3001/12/31.
+>All dates are between 3001/01/01 and 3001/12/31.
+
+>There are 48 180 trains in total.
 
 =========
 ## Prices
@@ -34,7 +36,7 @@ For each **train** there are many different **prices** with a given number of **
                       50 seats                 25 seats                 5 seats          
 ```
 
->For all trains there are about 13 297 680 prices.
+>For all trains there are 3 468 960 prices.
 
 =========
 ## Problem
@@ -81,3 +83,22 @@ Node services should be used to:
 ## Code It !
 
 Application is a super-classic SpringBoot application with code to complete in **BestPriceApi** and **BestPriceFinderService** classes.
+
+=========
+## Run It !
+
+Start **BestPriceApp** main class using your IDE or using this command:
+```bash
+./gradlew runDemo
+```
+
+>IDE launch is a bit faster than gradle command
+
+=========
+## Check Your API
+
+You can use cURL or your browser to request **BestPriceApi**.
+
+E.g.: [/FRPAR/GBLON/3001-01-01/3001-01-07?seats=2](http://localhost:8081/FRPAR/GBLON/3001-01-01/3001-01-07?seats=2)
+
+Make sure everything in [Demo App](http://localhost:8081/demo.html) is **green**.

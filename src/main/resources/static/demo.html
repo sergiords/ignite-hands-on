@@ -34,7 +34,7 @@
     <div id="app" class="slides">
 
         <section v-for="query in queries">
-            <h4>{{query.url}}</h4>
+            <h4><a v-bind:href="query.url" target="_blank">{{query.url}}</a></h4>
             <table>
                 <tr>
                     <th>Date</th>
@@ -44,9 +44,9 @@
                 <tr v-for="bestPrice in query.bestPrices">
                     <td>{{bestPrice.date}}</td>
                     <td v-if="bestPrice.price == bestPrice.computedPrice" class="pass">{{bestPrice.price}}</td>
-                    <td v-else class="fail">{{bestPrice.price}} != {{bestPrice.computedPrice}}</td>
+                    <td v-else class="fail">"{{bestPrice.computedPrice}}" != {{bestPrice.price}}</td>
                     <td v-if="bestPrice.time == bestPrice.computedTime" class="pass">{{bestPrice.time}}</td>
-                    <td v-else class="fail">{{bestPrice.time}} != {{bestPrice.computedTime}}</td>
+                    <td v-else class="fail">"{{bestPrice.computedTime}}" != {{bestPrice.time}}</td>
                 </tr>
             </table>
         </section>
@@ -56,8 +56,6 @@
 </div>
 
 <script>
-
-    Reveal.initialize({history: true, hideAddressBar: true});
 
     var app = new Vue({
         el: '#app',
@@ -77,8 +75,11 @@
         }
     });
 
+    var promises = [];
+
     app.queries.forEach(function (query) {
-        fetch(query.url)
+
+        var promise = fetch(query.url)
             .then(function (response) {
                 return response.json();
             })
@@ -91,8 +92,17 @@
                         bestPrice.computedPrice = computedBestPrice.price;
                         bestPrice.computedTime = computedBestPrice.time;
                     }
-                })
-            })
+                });
+
+            });
+
+        promises.push(promise);
+
+    });
+
+    Promise.all(promises).then(function () {
+        // initialize reveal slides only when all queries are resolved
+        Reveal.initialize({history: true, hideAddressBar: true});
     });
 
 </script>
