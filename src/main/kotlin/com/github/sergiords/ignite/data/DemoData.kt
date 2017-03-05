@@ -1,4 +1,5 @@
 @file: JvmName("DemoData")
+@file:Suppress("unused")
 
 package com.github.sergiords.ignite.data
 
@@ -28,10 +29,6 @@ data class Price(val seats: Int, val value: Int) : Serializable {
 
 }
 
-fun Station.isIn(stationPrefix: String) = code.startsWith(stationPrefix)
-fun Station.isInFR() = isIn("FR")
-fun Station.isInGB() = isIn("GB")
-
 class TrainServer : Serializable {
 
     fun dates() = dates
@@ -45,18 +42,54 @@ class TrainServer : Serializable {
             emptyList()
         }
 
-    fun prices(train: Train) = prices.map { (seats, value) -> Price(seats, value + train.pricing()) }
+    fun prices(train: Train) = prices.map { (seats, value) -> Price(train.seats(seats), train.pricing(value)) }
 
 }
 
-fun Train.pricing() = when {
-    origin.isInFR() && destination.isInGB() -> 75
-    origin.isInGB() && destination.isInFR() -> 50
-    else -> 30
-} + when {
-    destination.isInFR() -> 1
-    destination.isInFR() -> 1
-    else -> 20
+fun Station.isIn(stationPrefix: String) = code.startsWith(stationPrefix)
+
+fun Train.pricing(base: Int) =
+    base + when {
+        origin.isIn("FR") -> 75
+        else -> 50
+    } + when {
+        date.isOnHolidays() -> 42
+        else -> 0
+    } + when {
+        date.isOnWeekEnd() -> 31
+        else -> ((date.dayOfWeek.value * date.dayOfWeek.value) % 6) * 5
+    } + when {
+        time.isOnPeak() -> 15
+        else -> (time.hour * time.hour / 8) - (3 * time.hour) + 18
+    }
+
+fun Train.seats(base: Int) = when (base) {
+
+    cheapPrice.seats -> when {
+        date.isOnHolidays() || date.isOnWeekEnd() || time.isOnPeak() -> 0
+        !date.isOnHolidays() && !date.isOnWeekEnd() && !time.isOnPeak() -> 2
+        else -> base
+    }
+
+    standardPrice.seats -> when {
+        date.isOnWeekEnd() || time.isOnPeak() -> base
+        !date.isOnWeekEnd() && !time.isOnPeak() -> base + 2
+        else -> base
+    }
+
+    flexiblePrice.seats -> when {
+        date.isOnHolidays() || date.isOnWeekEnd() -> base + 2
+        !date.isOnHolidays() && !date.isOnWeekEnd() -> base
+        else -> base
+    }
+
+    businessPrice.seats -> when {
+        date.isOnHolidays() || date.isOnWeekEnd() || time.isOnPeak() -> base + 5
+        !date.isOnHolidays() && !date.isOnWeekEnd() && !time.isOnPeak() -> base + 2
+        else -> base
+    }
+
+    else -> base
 }
 
 val summerMonths = listOf(Month.JUNE, Month.JULY, Month.AUGUST)
@@ -66,26 +99,23 @@ val winterMonths = listOf(Month.DECEMBER, Month.JANUARY, Month.FEBRUARY)
 fun LocalDate.isOnWinterHolidays() = month in winterMonths
 
 fun LocalDate.isOnHolidays() = isOnWinterHolidays() || isOnSummerHolidays()
-fun LocalDate.isOffHolidays() = !isOnHolidays()
 
 val weekendDays = listOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
 fun LocalDate.isOnWeekEnd() = dayOfWeek in weekendDays
-fun LocalDate.isOffWeekEnd() = !isOnWeekEnd()
 
 fun LocalTime.isOnMorningPeak() = isAfter(LocalTime.of(7, 30)) && isBefore(LocalTime.of(9, 30))
 fun LocalTime.isOnAfternoonPeak() = isAfter(LocalTime.of(17, 0)) && isBefore(LocalTime.of(19, 0))
 fun LocalTime.isOnPeak() = isOnMorningPeak() || isOnAfternoonPeak()
-fun LocalTime.isOffPeak() = !isOnPeak()
 
 val frStations = listOf("FRDIJ", "FRBRE", "FRBDX", "FRLIL", "FRPAR", "FRMRS").map(::Station)
 val gbStations = listOf("GBLON", "GBOXF", "GBCAM", "GBMAN", "GBLIV", "GBGLA").map(::Station)
 val stations = listOf(frStations, gbStations).flatMap { it.toList() }
 
 val dates = (LocalDate.of(3001, 1, 1)..LocalDate.of(3001, 12, 31)).toList()
-val times = LocalTime.of(0, 0)..LocalTime.of(23, 0)
+val times = (LocalTime.of(6, 0)..LocalTime.of(23, 0)).toList()
 
-val standardPrice = Price(50, 20)
-val flexiblePrice = Price(50, 50)
-val businessPrice = Price(20, 100)
-
-val prices = listOf(standardPrice, flexiblePrice, businessPrice)
+val cheapPrice = Price(0, 10) // make this one hard to get
+val standardPrice = Price(1, 20)
+val flexiblePrice = Price(2, 50)
+val businessPrice = Price(5, 100)
+val prices = listOf(cheapPrice, standardPrice, flexiblePrice, businessPrice)

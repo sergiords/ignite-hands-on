@@ -97,6 +97,8 @@ Start **BestPriceApp** main class using your IDE or using this command:
 =========
 ## Check Your API
 
+Wait for cache to be fully loaded on all server nodes (check logs).
+
 You can use cURL or your browser to request **BestPriceApi**.
 
 E.g.: [/FRPAR/GBLON/3001-01-01/3001-01-07?seats=2](http://localhost:8081/FRPAR/GBLON/3001-01-01/3001-01-07?seats=2)
