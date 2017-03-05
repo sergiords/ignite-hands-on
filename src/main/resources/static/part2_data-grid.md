@@ -1,13 +1,13 @@
 # Data Grid
 
-In this part we will learn how to create and use different **caches** in our cluster.
+In this part we will learn how to create and use different distributed **caches** in our cluster.
 
 ![img](img/data-grid.jpg)
 
 =========
 ## Data grid: how-to
 
-Creating a distributed **cache** in our cluster is as-easy-as:
+Creating a distributed **cache** in our cluster is as easy as:
 
 ```java
 import org.apache.ignite.*;
@@ -218,9 +218,9 @@ Try it !
 =========
 ## Solution
 
-- Case 1: each server node computes `cache#localSize` locally and each value is reduced in a single collection: **sizes1**.
+- Case 1: each server node computes `cache#localSize` locally and each value is reduced in a single collection: **sizes1** in client node.
 
-- Case 2: each server node computes `cache#localSize` locally but add size to **a copy** of the **sizes2** collection in client node.
+- Case 2: each server node computes `cache#localSize` locally but add size to **a copy** of the **sizes2** collection defined in client node.
 
 =========
 ## For the curious
@@ -254,6 +254,5 @@ There's a lot more to say about data grid:
 - Transactions and atomicity modes, rebalancing modes
 - Memory modes (OFF_HEAP)
 - SQL grid over data grid
-- ...
 
 For this hands on, we've have learned enough, so let's move to affinity.

@@ -5,9 +5,9 @@ In this part we will learn how to execute basic **compute** operations in our cl
 ![img](img/compute-grid.png)
 
 =========
-## Compute grid how-to
+## Compute grid: How To
 
-Executing code in our cluster is as-easy-as:
+Executing code in our cluster is as easy as:
 
 ```java
 import org.apache.ignite.*;
@@ -30,7 +30,7 @@ This code prints in one random-picked **server node** console:
 ```
 
 =========
-## Step1_Runnable
+## Ignite Runnable
 
 An **IgniteRunnable** does not return any result. It just sends computations in the cluster.
 
@@ -43,7 +43,7 @@ Part1_Step1
 ```
 
 =========
-## Step1_Runnable: checks
+## Ignite Runnable: checks
 
 Ensure on every execution that:
 
@@ -54,7 +54,7 @@ Ensure on every execution that:
  - **"Hello First Node"** and **"Hello Second Node"** are each logged in one node only
 
 =========
-## Step2_Callable
+## Ignite Callable
 
 An **IgniteCallable** does return a result.
 
@@ -69,7 +69,7 @@ Part1_Step2
 ```
 
 =========
-## Step1_Callable: checks
+## Ignite Callable: checks
 
 Every execution should retrieve and print on client console:
 

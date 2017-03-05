@@ -16,6 +16,8 @@
 ## Data Grid
 ![img](img/data-grid.jpg)
 
+Cache based Key/Value distributed store
+
 =========
 ## Service Grid
 ![img](img/service-grid.png)

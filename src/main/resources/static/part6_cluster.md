@@ -1,6 +1,6 @@
 # Cluster
 
-This part describes how **ClusterNodes** can used and grouped in **ClusterGroup** instances.
+This part describes how **ClusterNodes** can be used and grouped in **ClusterGroup** instances.
 
 ![img](img/cluster.png)
 
@@ -82,7 +82,7 @@ Part6_Step1
 =========
 ## Cluster Nodes and Groups: Checks
 
-Ensure second message in only displayed in **server node 1 and 2**.
+Ensure second message is only displayed in **server node 1 and 2**.
 
 For the first message, well, it depends on your machine.
 
@@ -93,8 +93,8 @@ Otherwise, message **will be displayed on all nodes**.
 =========
 ## Cluster
 
-ClusterGroup and ClusterNode can be used in almost all Ignite APIs: IgniteCompute, IgniteServices, IgniteMessages, IgniteEvents, ...
+**ClusterGroup** and **ClusterNode** can be used in almost all Ignite APIs: **IgniteCompute**, **IgniteServices**, **IgniteMessages** and **IgniteEvents**.
 
-They can also be used to filter nodes where caches are deployed.
+They can also be used to filter nodes where **caches are deployed**.
 
 Enough ! Let's take a look at a real use case for Ignite.

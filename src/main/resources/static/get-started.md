@@ -1,12 +1,12 @@
 # Get Started
 
-In this hands on, Ignite will be used as an embedded library.
+In this hands on, **Ignite** will be used as an embedded library.
 >It can also be used in standalone mode.
 
 =========
-## Ignite cluster how-to
+## Ignite cluster: How To
 
-Ignite is designed to work in **cluster**. Every node can be started like this:
+**Ignite** is designed to work in **cluster**. Every node can be started like this:
 
 ```java
 import org.apache.ignite.Ignite;
@@ -69,7 +69,7 @@ Topology snapshot [ver=1, servers=3, clients=0, ...]
 
 By default, **client nodes** do not participate in cluster operations, but rather forward them to **server nodes**.
 
-In this hands on, each step will be executed by a client node.
+In this hands on, each step will be executed by **a client node**.
 
 A cluster can perfectly work with **server nodes** only.
 
@@ -85,7 +85,7 @@ To configure **client node**, complete **ClientApp** class.
 
 A **Client node** is started for each step but, good to know, they all rely on the same **ClientApp** main class.
 
-This class prompts you for the **step id to run** and pressing return in console allows you to **run Step multiple times**.
+This class prompts you for the **step id to run** and pressing return in **client node console** allows you to **run Step multiple times**.
 
 ```bash
 ./gradlew runClient
@@ -97,4 +97,4 @@ Part1_Step1
 =========
 ## Well-done !
 
-We are now ready to execute some code in **server nodes** using **client nodes**.
+We are now ready to execute some code in **server nodes** using a **client node**.

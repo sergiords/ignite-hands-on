@@ -25,7 +25,7 @@ public class App {
 
         ignite.message().remoteListen("my-topic", (nodeId, message) -> {
             System.out.println("message: " + message);
-            return true;
+            return true; // keep on listening to new messages
         });
 
         ignite.message().send("my-topic", "Hello");
@@ -58,7 +58,7 @@ Ignite also provides an **event-based** notification system.
 
 A node can **subscribe** to events **triggered** on local node or remote nodes.
 
-Events can be things such as: value put in cache, job execution end or failure, node leaving or joining cluster, ...
+Events can be things such as: value put in cache, job execution end or failure, node leaving or joining cluster.
 
 =========
 ## Events: How To
@@ -76,7 +76,7 @@ public class App {
         ignite.events().remoteListen(
             (nodeId, event) -> {
                 System.out.println("event: " + event);
-                return true;
+                return true; // keep on listening to new events
             },
             event -> event.type() == EventType.EVT_CACHE_OBJECT_PUT
         );
@@ -96,7 +96,7 @@ A special care has to be taken when listening to events, and that's why they are
 
 For this hands on, only 2 events were enabled to illustrate **events system**.
 
-> See `Config` class for more details if you want to test other events
+> See **Config** class for more details if you want to test other events
 
 =========
 ## Events: Code It
@@ -114,7 +114,7 @@ Part5_Step2
 
 Ensure events are displayed in **client node** console only.
 
-You should see other events logged since ClientApp logs the begin and end of each execution step on each node using a broadcast call.
+You should see other events logged since **ClientApp** logs the begin and end of each execution step on each node using a broadcast call.
 
 =========
 ## Events &amp; Messaging

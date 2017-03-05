@@ -47,7 +47,7 @@ Here Ignite deploys **6 service instances** across the cluster but with **3 inst
 
 Complete **ComputerService** class.
 
-This class is the service to be deployed in following steps.
+This class is the service to be deployed in the following steps.
 
 =========
 ## Cluster Service
@@ -157,7 +157,7 @@ Ensure **nodeId** retrieved with `affinityCall` corresponds to the node where **
 
 **Kill this server node**... wait.
 
-**Execute step again**, ensure service is available in another node and **nodeId** matches **node** where service is now.
+**Execute step again**, ensure service is available in another node and **nodeId** matches **node** where service is now deployed.
 
 Restart killed **server node**.
 

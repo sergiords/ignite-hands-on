@@ -13,7 +13,7 @@ For each combination of **origin**, **destination** and **date** there are many 
                        |FRPAR      |GBLON      |3001-01-01 |12:00      |
                        |FRPAR      |GBLON      |3001-01-02 |10:00      |
                        |FRPAR      |GBCAM      |3001-01-02 |12:00      |
-                       |FRBDX      |GBCAM      |3001-01-01 |10:00      |
+                       |FRLIL      |GBCAM      |3001-01-01 |10:00      |
                        |...        |...        |...        |...        |
 ```
 
