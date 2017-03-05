@@ -110,7 +110,7 @@ public class BestPriceFinderService implements BestPriceFinder, Service {
 
     @Override
     public void cancel(ServiceContext ctx) {
-        ignite.destroyCache(CACHE_NAME);
+
     }
 
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PreDestroy;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -63,6 +64,12 @@ public class BestPriceApi {
             .filter(Optional::isPresent) // do not show dates with no results
             .map(Optional::get)
             .collect(toList());
+    }
+
+    @PreDestroy
+    public void destroy() {
+        ignite.services().cancel(SERVICE_NAME);
+        ignite.destroyCache(CACHE_NAME);
     }
 
 }
