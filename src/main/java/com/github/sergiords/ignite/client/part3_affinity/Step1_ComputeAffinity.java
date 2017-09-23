@@ -1,7 +1,7 @@
 package com.github.sergiords.ignite.client.part3_affinity;
 
 import com.github.sergiords.ignite.client.ClientStep;
-import com.github.sergiords.ignite.data.AffinityData;
+import com.github.sergiords.ignite.data.CacheData;
 import com.github.sergiords.ignite.data.Team;
 import com.github.sergiords.ignite.data.User;
 import org.apache.ignite.Ignite;
@@ -30,15 +30,15 @@ public class Step1_ComputeAffinity implements ClientStep {
 
         /*
          * TODO:
-         * - create a partitioned cache named "my-compute-affinity-cache" just like in Step1_PartitionedCache
+         * - create a partitioned cache named "my-compute-affinity-cache" just like in Step1_Cache
          */
         this.cache = null;
 
         /*
          * TODO:
          * - populate cache
-         * - use AffinityData#teams to find teams
-         * - use AffinityData#users to find users for a team
+         * - use CacheData#teams to find teams
+         * - use CacheData#users to find users for a team
          */
 
         /*
@@ -53,7 +53,7 @@ public class Step1_ComputeAffinity implements ClientStep {
     @Override
     public void run() {
 
-        Team team = AffinityData.teams().get(5);
+        Team team = CacheData.teams().get(5);
 
         int partition = findPartition(team);
 

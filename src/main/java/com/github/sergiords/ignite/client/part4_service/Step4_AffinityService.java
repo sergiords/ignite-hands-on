@@ -18,7 +18,7 @@ public class Step4_AffinityService implements ClientStep {
 
         /*
          * TODO:
-         * - create a partitioned cache named "my-affinity-service-cache" just like in Step1_PartitionedCache
+         * - create a partitioned cache named "my-affinity-service-cache" just like in Step1_Cache
          */
 
         /*

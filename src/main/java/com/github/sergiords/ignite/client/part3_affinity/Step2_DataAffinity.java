@@ -1,7 +1,7 @@
 package com.github.sergiords.ignite.client.part3_affinity;
 
 import com.github.sergiords.ignite.client.ClientStep;
-import com.github.sergiords.ignite.data.AffinityData;
+import com.github.sergiords.ignite.data.CacheData;
 import com.github.sergiords.ignite.data.Team;
 import com.github.sergiords.ignite.data.User;
 import org.apache.ignite.Ignite;
@@ -26,7 +26,7 @@ public class Step2_DataAffinity implements ClientStep {
 
         /*
          * TODO:
-         * - create a partitioned cache named "my-data-affinity-cache" just like in Step1_PartitionedCache
+         * - create a partitioned cache named "my-data-affinity-cache" just like in Step1_Cache
          */
         this.cache = null;
     }
@@ -38,7 +38,7 @@ public class Step2_DataAffinity implements ClientStep {
 
         Map<String, List<Team>> teamsByNode = findTeamsByNode();
 
-        String country = AffinityData.getCountries().get(0);
+        String country = CacheData.getCountries().get(0);
 
         List<User> topCommitterFromCountry = topCommitterFromCountry(country);
 
@@ -63,8 +63,8 @@ public class Step2_DataAffinity implements ClientStep {
          * TODO:
          * - populate cache
          * - put all teams from the same country in the same node using affinityKey method defined above
-         * - use AffinityData#teams to find teams
-         * - use AffinityData#users to find users for a team
+         * - use CacheData#teams to find teams
+         * - use CacheData#users to find users for a team
          */
     }
 
