@@ -5,12 +5,14 @@ buildscript {
 
     repositories { mavenCentral() }
 
-    dependencies { classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.0" }
+    dependencies {
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
+    }
 
 }
 
 apply plugin: 'java'
-apply plugin: 'kotlin'
+apply plugin: 'org.junit.platform.gradle.plugin'
 
 repositories { mavenCentral() }
 
@@ -21,43 +23,10 @@ tasks.withType(JavaCompile) {
 
 dependencies {
 
-    // Kotlin
-    compile "org.jetbrains.kotlin:kotlin-stdlib:1.1.0"
-
-    // Spring Boot
-    compile "org.springframework.boot:spring-boot-starter-web:1.5.1.RELEASE"
-    compile "org.springframework.boot:spring-boot-devtools:1.5.1.RELEASE"
-    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.5"
-
-    // Ignite
     compile "org.apache.ignite:ignite-core:1.8.0"
 
-    // Reveal.js
-    compile "org.webjars.bower:reveal.js:3.4.1"
-    compile "org.webjars.bower:vue:2.2.1"
-
-}
-
-[
-
-    "com.github.sergiords.ignite.keynote.KeynoteApp": ["Keynote"],
-    "com.github.sergiords.ignite.server.ServerApp"  : ["Server1", "Server2", "Server3"],
-    "com.github.sergiords.ignite.client.ClientApp"  : ["Client"],
-    "com.github.sergiords.ignite.demo.BestPriceApp" : ["Demo"]
-
-].forEach { mainClass, nodeIdList ->
-
-    nodeIdList.forEach { nodeId ->
-
-        task([type: JavaExec, group: "ignite hands on"], "run$nodeId") {
-
-            main = mainClass
-            jvmArgs = ["-Xms128m", "-Xmx512m"]
-            systemProperties["node.id"] = nodeId
-            classpath = sourceSets.main.runtimeClasspath
-
-        }
-
-    }
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0")
+    testCompile("org.junit.jupiter:junit-jupiter-engine:5.0.0")
+    testCompile("org.assertj:assertj-core:3.8.0")
 
 }
