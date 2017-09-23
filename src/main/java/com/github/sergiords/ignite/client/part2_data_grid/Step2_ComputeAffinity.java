@@ -1,4 +1,4 @@
-package com.github.sergiords.ignite.client.part3_affinity;
+package com.github.sergiords.ignite.client.part2_data_grid;
 
 import com.github.sergiords.ignite.data.CacheData;
 import com.github.sergiords.ignite.data.Team;
@@ -17,7 +17,7 @@ import java.util.Optional;
 
 import static java.util.Comparator.comparing;
 
-public class Step1_ComputeAffinity implements Runnable {
+public class Step2_ComputeAffinity implements Runnable {
 
     private static final String CACHE_NAME = "my-compute-affinity-cache";
 
@@ -27,7 +27,7 @@ public class Step1_ComputeAffinity implements Runnable {
 
     private final IgniteCache<Team, List<User>> cache;
 
-    public Step1_ComputeAffinity(Ignite ignite) {
+    public Step2_ComputeAffinity(Ignite ignite) {
 
         this.ignite = ignite;
 
