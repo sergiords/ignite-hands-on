@@ -3,8 +3,6 @@ package com.github.sergiords.ignite.client.part4_service;
 import org.apache.ignite.services.Service;
 import org.apache.ignite.services.ServiceContext;
 
-import java.util.stream.Stream;
-
 public class ComputerService implements Computer, Service {
 
     @Override
