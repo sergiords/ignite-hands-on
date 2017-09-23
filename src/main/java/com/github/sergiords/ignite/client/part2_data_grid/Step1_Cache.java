@@ -111,12 +111,9 @@ public class Step1_Cache {
             .collect(Collectors.toList());
     }
 
-    public Team processTeam(IgniteCache<Integer, Team> cache, Integer id) {
+    public String processTeam(IgniteCache<Integer, Team> cache, Integer id) {
 
-        return cache.invoke(id, (entry, args) -> {
-            String newName = entry.getValue().getName().toUpperCase();
-            return new Team(entry.getKey(), newName);
-        });
+        return cache.invoke(id, (entry, args) -> entry.getValue().getName().toUpperCase());
     }
 
     public IgniteCache<Integer, Team> createReplicatedCache(Ignite ignite) {

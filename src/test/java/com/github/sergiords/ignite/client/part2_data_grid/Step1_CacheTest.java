@@ -78,7 +78,7 @@ public class Step1_CacheTest {
             dynamicTest("sql query", () -> assertThat(step1.findBySqlQuery(cache, "%99"))
                 .extracting(Team::getId).hasSize(10).allMatch(id -> id % 100 == 99)),
             dynamicTest("process entry", () -> assertThat(step1.processTeam(cache, 99))
-                .isNotNull().satisfies(team -> assertThat(team.getName()).isEqualTo("TEAM99"))),
+                .isNotNull().isEqualTo("TEAM99")),
 
             // Size
             dynamicTest("cache size", () -> assertThat(step1.getCacheSize(cache)).isEqualTo(expected)),
