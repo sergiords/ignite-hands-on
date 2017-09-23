@@ -1,47 +1,13 @@
 # Ignite hands-on
 
-## Build
-```sh
-./gradlew clean build
-```
+- [Introduction](./guide/introduction.md)
+- [Get Started](./guide/get-started.md)
+- [Compute Grid](./guide/part1_compute-grid.md)
+- [Data Grid](./guide/part2_data-grid.md)
+- [Affinity](./guide/part3_affinity.md)
+- [Service Grid](./guide/part4_service-grid.md)
+- [Messaging **[Optional]**](./guide/part5_messaging.md)
+- [Cluster **[Optional]**](./guide/part6_cluster.md)
+- [Conclusion](./guide/conclusion.md)
 
-## Run
-
-### Keynote
-
-```sh
-./gradlew runKeynote
-```
-
-[http://localhost:8080](http://localhost:8080)
-
-
-### Server Nodes
-
-```sh
-./gradlew runServer1
-```
-
-```sh
-./gradlew runServer2
-```
-
-```sh
-./gradlew runServer3
-```
-
-
-### Client Node
-
-```sh
-./gradlew runClient
-```
-
-
-### Demo Application
-
-```sh
-./gradlew runDemo
-```
-
-[http://localhost:8081](http://localhost:8081)
+- Demo Application
