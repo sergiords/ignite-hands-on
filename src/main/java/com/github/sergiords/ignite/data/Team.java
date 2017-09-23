@@ -11,9 +11,12 @@ public class Team {
     @QueryTextField
     private final String name;
 
-    public Team(Integer id, String name) {
+    private final String country;
+
+    public Team(Integer id, String name, String country) {
         this.id = id;
         this.name = name;
+        this.country = country;
     }
 
     public Integer getId() {
@@ -22,5 +25,9 @@ public class Team {
 
     public String getName() {
         return name;
+    }
+
+    public String getCountry() {
+        return country;
     }
 }
