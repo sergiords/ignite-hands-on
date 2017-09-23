@@ -24,6 +24,11 @@ public class Config {
      * ==============================================
      */
 
+    static {
+        // disable performance suggestion for hands on on a local machine...
+        System.setProperty("IGNITE_PERFORMANCE_SUGGESTIONS_DISABLED", "true");
+    }
+
     /*
      * Discovery SPI: how nodes discover each other in the cluster
      */
