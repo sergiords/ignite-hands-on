@@ -3,6 +3,8 @@ package com.github.sergiords.ignite.client.part4_service;
 import org.apache.ignite.services.Service;
 import org.apache.ignite.services.ServiceContext;
 
+import java.util.stream.Stream;
+
 public class ComputerService implements Computer, Service {
 
     @Override
@@ -23,7 +25,7 @@ public class ComputerService implements Computer, Service {
          * TODO:
          * - return the sum of all args
          */
-        return null;
+        return Stream.of(args).mapToInt(Integer::intValue).sum();
     }
 
     @Override

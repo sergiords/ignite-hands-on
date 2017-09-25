@@ -3,7 +3,6 @@ package com.github.sergiords.ignite.client.part4_service;
 import com.github.sergiords.ignite.client.ClientStep;
 import org.apache.ignite.Ignite;
 
-@SuppressWarnings({"unused", "ConstantConditions"})
 public class Step1_ClusterService implements ClientStep {
 
     private static final String SERVICE_NAME = "my-cluster-service";
@@ -19,6 +18,7 @@ public class Step1_ClusterService implements ClientStep {
          * - deploy a service named "my-cluster-service" using an instance of ComputerService
          * - see: IgniteServices#deployClusterSingleton
          */
+        ignite.services().deployClusterSingleton(SERVICE_NAME, new ComputerService());
     }
 
     @Override
@@ -43,13 +43,13 @@ public class Step1_ClusterService implements ClientStep {
          * - proxy should not be sticky
          * - use: IgniteServices#serviceProxy
          */
-        Computer computer = null;
+        Computer computer = ignite.services().serviceProxy(SERVICE_NAME, Computer.class, false);
 
         /*
          * TODO:
          * - use service proxy instance and call service method to return numbers sum
          */
-        return null;
+        return computer.sum(numbers);
     }
 
     private Integer runServiceInCallable(Integer... numbers) {
@@ -64,13 +64,13 @@ public class Step1_ClusterService implements ClientStep {
              * TIP:
              * - we need a proxy because service might not be deployed in node this callable is actually running into
              */
-            Computer computerProxy = null;
+            Computer computerProxy = ignite.services().serviceProxy(SERVICE_NAME, Computer.class, false);
 
             /*
              * TODO:
              * - use proxy to return the sum of numbers
              */
-            return null;
+            return computerProxy.sum(numbers);
         });
     }
 

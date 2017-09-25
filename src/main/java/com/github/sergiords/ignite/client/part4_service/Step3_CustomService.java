@@ -2,8 +2,11 @@ package com.github.sergiords.ignite.client.part4_service;
 
 import com.github.sergiords.ignite.client.ClientStep;
 import org.apache.ignite.Ignite;
+import org.apache.ignite.services.ServiceConfiguration;
+import org.apache.ignite.services.ServiceDescriptor;
 
-@SuppressWarnings("ConstantConditions")
+import java.util.Map;
+
 public class Step3_CustomService implements ClientStep {
 
     private static final String SERVICE_NAME = "my-custom-service";
@@ -26,6 +29,13 @@ public class Step3_CustomService implements ClientStep {
          * TIP:
          * - previous deployClusterSingleton and deployNodeSingleton methods are ServiceConfiguration shortcuts
          */
+        ServiceConfiguration serviceConfiguration = new ServiceConfiguration();
+        serviceConfiguration.setName(SERVICE_NAME);
+        serviceConfiguration.setMaxPerNodeCount(2);
+        serviceConfiguration.setTotalCount(5);
+        serviceConfiguration.setService(new ComputerService());
+        serviceConfiguration.setNodeFilter(node -> !node.isClient());
+        ignite.services().deploy(serviceConfiguration);
     }
 
     @Override
@@ -55,13 +65,13 @@ public class Step3_CustomService implements ClientStep {
          * TIP:
          * - we still need a proxy here because this code is running in client
          */
-        Computer computer = null;
+        Computer computer = ignite.services().serviceProxy(SERVICE_NAME, Computer.class, false);
 
         /*
          * TODO:
          * - use service proxy instance and call service method to return numbers sum
          */
-        return null;
+        return computer.sum(numbers);
     }
 
     private Integer runServiceInCallable(Integer[] numbers) {
@@ -76,13 +86,13 @@ public class Step3_CustomService implements ClientStep {
              * - like with node service we do not need a proxy here
              * - server nodes have at least one or two locally deployed services (total = 5, maxPerNode = 2)
              */
-            Computer computer = null;
+            Computer computer = ignite.services().service(SERVICE_NAME);
 
             /*
              * TODO:
              * - use service to return the sum of numbers
              */
-            return null;
+            return computer.sum(numbers);
         });
     }
 
@@ -92,7 +102,13 @@ public class Step3_CustomService implements ClientStep {
          * TODO:
          * - return number of services named "my-custom-service" deployed across the cluster
          */
-        return null;
+        return ignite.services().serviceDescriptors().stream()
+            .filter(serviceDescriptor -> serviceDescriptor.name().equals(SERVICE_NAME))
+            .findFirst()
+            .map(ServiceDescriptor::topologySnapshot)
+            .map(Map::values)
+            .map(integers -> integers.stream().mapToInt(Integer::intValue).sum())
+            .orElse(0);
     }
 
     @Override
