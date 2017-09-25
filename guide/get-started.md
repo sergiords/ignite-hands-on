@@ -58,6 +58,7 @@ Complete TODO in **ClientApp**.
 
 ### Step 2
 Play around to execute some compute queries from **ClientApp** node. Try this for example:
+
 ```java
 import org.apache.ignite.Ignite;
 
