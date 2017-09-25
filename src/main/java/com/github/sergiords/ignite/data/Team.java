@@ -3,6 +3,8 @@ package com.github.sergiords.ignite.data;
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
 import org.apache.ignite.cache.query.annotations.QueryTextField;
 
+import java.util.Objects;
+
 public class Team {
 
     private final Integer id;
@@ -29,5 +31,15 @@ public class Team {
 
     public String getCountry() {
         return country;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        return that != null && that instanceof Team && Objects.equals(id, ((Team) that).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

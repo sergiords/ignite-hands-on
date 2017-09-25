@@ -1,5 +1,7 @@
 package com.github.sergiords.ignite.data;
 
+import java.util.Objects;
+
 public class User {
 
     private final Team team;
@@ -27,5 +29,15 @@ public class User {
 
     public Integer getCommits() {
         return commits;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        return that != null && that instanceof User && Objects.equals(id, ((User) that).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
