@@ -47,7 +47,7 @@ Topology snapshot [ver=1, servers=3, clients=0, ...]
 
 By default, **client nodes** do not participate in cluster operations, but rather forward them to **server nodes**.
 
-In this hands on, each test starts a new **client node** and send compute queries to **server nodes**.
+In this hands on, each test starts a new **client node** and sends compute queries to **server nodes**.
 
 A cluster can perfectly work with **server nodes** only. Using **client nodes** avoids restarting all **server nodes** every time a test is executed. 
 
