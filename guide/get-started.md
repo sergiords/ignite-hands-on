@@ -77,4 +77,4 @@ Check each **ServerApp** console!
 
 We are now ready to go for next steps.
 
-[Home](../readme.md) | [Back](./introduction.md) | [Next Step](./part1_compute-grid.md)
+[Home](../readme.md) | [Back](./introduction.md) | [Next](./part1_compute-grid.md)
