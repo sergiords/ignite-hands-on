@@ -98,3 +98,5 @@ Otherwise, message **will be displayed on all nodes**.
 They can also be used to filter nodes where **caches are deployed**.
 
 Enough ! Let's take a look at a real use case for Ignite.
+
+[Home](../readme.md) | [Back](./part5_messaging.md) | [Next](./conclusion.md)

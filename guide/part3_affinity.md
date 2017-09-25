@@ -124,3 +124,5 @@ Now that we can manipulate Ignite's **compute and data grid** we can think of hi
 Ignite brings [MANY more tools](https://apacheignite.readme.io/docs/)... But let's focus.
 
 Next part will be about **Service grid**.
+
+[Home](../readme.md) | [Back](./part2_data-grid.md) | [Next](./part4_service-grid.md)

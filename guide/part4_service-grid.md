@@ -174,3 +174,5 @@ Restart killed **server node**.
 That's it. You now have all elements to begin coding the **demo application**.
 
 If you have enough time you can follow with **messaging & events** and **cluster** parts, otherwise, no problem, go for the **demo**.
+
+[Home](../readme.md) | [Back](./part3_affinity.md) | [Next](./part5_messaging.md)

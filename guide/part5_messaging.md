@@ -131,3 +131,5 @@ But that's pretty much it.
 ## Next Step: Cluster
 
 If you still have enough time you can continue with **cluster** part, otherwise go to the **demo**.
+
+[Home](../readme.md) | [Back](./part4_service-grid.md) | [Next](./part6_cluster.md)

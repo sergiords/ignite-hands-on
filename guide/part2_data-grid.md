@@ -256,3 +256,5 @@ There's a lot more to say about data grid:
 - SQL grid over data grid
 
 For this hands on, we've have learned enough, so let's move to affinity.
+
+[Home](../readme.md) | [Back](./part1_compute-grid.md) | [Next](./part3_affinity.md)

@@ -143,3 +143,5 @@ That's it for computing part.
 Although steps were pretty easy, we have learned enough about how to distribute computations across the cluster.
 
 Let's move to data grid.
+
+[Home](../readme.md) | [Back](./get-started.md) | [Next](./part2_data-grid.md)
