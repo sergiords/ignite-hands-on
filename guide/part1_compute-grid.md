@@ -4,8 +4,7 @@ In this part we will learn how to execute basic **compute** operations in our cl
 
 ![img](img/compute-grid.png)
 
-=========
-## Compute grid: How To
+## Compute Grid: Example
 
 Executing code in our cluster is as easy as:
 
@@ -18,69 +17,30 @@ public class Main {
 
         Ignite ignite = Ignition.start();
 
-        ignite.compute().run(() -> System.out.println(1 + 1));
-
+        ignite.compute().run(() -> System.out.println("Hello World"));
     }
-
 }
 ```
-This code prints in one random-picked **server node** console: 
+This code prints in one **server node**: 
 ```bash
-2
+Hello World
 ```
 
-=========
 ## Ignite Runnable
 
-An **IgniteRunnable** does not return any result. It just sends computations in the cluster.
+An **IgniteRunnable** does not return any result. It just sends computations to the cluster.
 
-Complete **Step1_Runnable** class.
+## Ignite Runnable: Exercise
 
-Run it:
-```bash
-./gradlew runClient
-Part1_Step1
-```
+Complete TODOs in **Step1_Runnable** and make all tests in **Step1_RunnableTest** pass.
 
-=========
-## Ignite Runnable: checks
-
-Ensure on every execution that:
-
- - **"Hello Single Node"** is logged in one node only
-
- - **"Hello Every Node"** is logged in all nodes
-
- - **"Hello First Node"** and **"Hello Second Node"** are each logged in one node only
-
-=========
 ## Ignite Callable
 
-An **IgniteCallable** does return a result.
+An **IgniteCallable** does return a result. It sends computation in the cluster and get result back to calling node.
 
-It sends computation in the cluster and get its result back to calling node.
+## Ignite Callable: Exercise
+Complete TODOs in **Step1_Callable** and make all tests in **Step1_CallableTest** pass.
 
-Complete **Step1_Callable** class.
-
-Run it:
-```bash
-./gradlew runClient
-Part1_Step2
-```
-
-=========
-## Ignite Callable: checks
-
-Every execution should retrieve and print on client console:
-
-- **nodeId** from **one node**
-
-- **free memory** from **all nodes**
-
-- **Thread name** from **two nodes**
-
-
-=========
 ## Spot the difference
 
 Can you spot the difference between case 1 and 2 ?
@@ -95,27 +55,23 @@ public class App {
         Ignite ignite = Ignition.start();
 
         // Case 1
-        UUID uuid1 = ignite.compute().call(() -> ignite.cluster().localNode().id());
+        String nodeId1 = ignite.compute().call(() -> System.getProperty("node.id"));
 
         // Case 2
-        ClusterNode node = ignite.cluster().localNode();
-        UUID uuid2 = ignite.compute().call(() -> node.id());
-
+        String nodeId2 = System.getProperty("node.id");
+        String nodeId3 = ignite.compute().call(() -> nodeId);
     }
-
 }
 ```
 
 Try it !
 
-=========
-## Solution
+## Spot the difference: Solution
 
 - Case 1: value is computed **inside** the lambda, on the executing **server node**.
 
-- Case 2: value is computed **outside** the lambda, its value is fixed on **client node**, serialized and **sent to server node**.
+- Case 2: value is computed **outside** the lambda, its value is fixed on **client node**, serialized and sent to **server node**.
 
-=========
 ## For the curious
 
 What about `ignite` variable inside lambda ?
@@ -124,24 +80,20 @@ What about `ignite` variable inside lambda ?
 import org.apache.ignite.*;
 
 public class App {
+
     public static void main(String[] args) {
 
         Ignite ignite = Ignition.start();
         UUID uuid1 = ignite.compute().call(() -> ignite.cluster().localNode().id());
-
     }
 }
 ```
 
 >Ignite implementations are Externalizable but not Serializable (see IgniteKernal).
+They are not serialized, but each reference is retrieved from corresponding node.
 
-=========
 ## Enough computing
 
-That's it for computing part.
-
-Although steps were pretty easy, we have learned enough about how to distribute computations across the cluster.
-
-Let's move to data grid.
+That's it for computing part. Although steps were pretty easy, we have learned enough about how to distribute computations across the cluster. Let's move to data grid.
 
 [Home](../readme.md) | [Back](./get-started.md) | [Next](./part2_data-grid.md)
