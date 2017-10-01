@@ -17,8 +17,8 @@ public class Step1_Runnable {
 
         /*
          * TODO:
-         * - print "Hello Single Node" in only one node
-         * - use IgniteCompute#run
+         * - use ignite.compute().run(...) to send a computation to one (random) server node
+         * - call ServerApp.print("Hello Single Node") in computation
          */
         ignite.compute().run(() -> ServerApp.print("Hello Single Node"));
     }
@@ -27,18 +27,19 @@ public class Step1_Runnable {
 
         /*
          * TODO:
-         * - print "Hello Every Node" in each node
-         * - use IgniteCompute#broadcast
+         * - use ignite.compute().broadcast(...) to send a computation to all server nodes
+         * - call ServerApp.print("Hello All Nodes") in computation
          */
-        ignite.compute().broadcast(() -> ServerApp.print("Hello Every Node"));
+        ignite.compute().broadcast(() -> ServerApp.print("Hello All Nodes"));
     }
 
     public void runInTwoNodes() {
 
         /*
          * TODO:
-         * - print "Hello First Node" in one node and "Hello Second Node" in another node in only one computation call
-         * - use IgniteCompute#run
+         * - use ignite.compute().run(...) to send two computations to two (random) server nodes
+         * - call ServerApp.print("Hello First Node") in first computation
+         * - call ServerApp.print("Hello Second Node") in second computation
          */
         ignite.compute().run(asList(
             () -> ServerApp.print("Hello First Node"),

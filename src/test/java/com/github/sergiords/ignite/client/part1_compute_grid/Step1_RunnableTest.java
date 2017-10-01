@@ -27,7 +27,8 @@ class Step1_RunnableTest {
 
         step1.runInOneNode();
 
-        assertThat(ignite.compute().broadcast(ServerApp::watch)).containsOnly(null, null, "Hello Single Node");
+        assertThat(ignite.compute().broadcast(ServerApp::watch))
+            .containsOnly(null, null, "Hello Single Node");
     }
 
     @Test
