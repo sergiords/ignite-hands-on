@@ -18,24 +18,7 @@ import static org.apache.ignite.cache.CachePeekMode.*;
 
 public class ServerApp {
 
-    private static final Logger logger;
-
-    static {
-        System.setProperty("java.util.logging.SimpleFormatter.format", "[========]%n[%1$tT] %5$s%n[========]%n");
-        logger = Logger.getLogger("ServerApp");
-        logger.addHandler(new ConsoleHandler() {
-            @Override
-            public void setOutputStream(OutputStream out) {
-                // output logs to System.out instead of System.err!
-                super.setOutputStream(System.out);
-            }
-        });
-    }
-
     public static void main(String[] args) {
-
-        // Set a unique info in each node
-        System.setProperty("node.info", UUID.randomUUID().toString());
 
         /*
          * TODO:
@@ -51,9 +34,28 @@ public class ServerApp {
 
     /*
      * ==============================================
-     * DO NOT EDIT configuration bellow this comment.
+     * DO NOT EDIT code bellow this comment.
      * ==============================================
      */
+
+    private static final Logger logger;
+
+    static {
+
+        // Set a unique info in each node
+        System.setProperty("node.info", UUID.randomUUID().toString());
+
+        // Configure logging
+        System.setProperty("java.util.logging.SimpleFormatter.format", "[========]%n[%1$tT] %5$s%n[========]%n");
+        logger = Logger.getLogger("ServerApp");
+        logger.addHandler(new ConsoleHandler() {
+            @Override
+            public void setOutputStream(OutputStream out) {
+                // output logs to System.out instead of System.err!
+                super.setOutputStream(System.out);
+            }
+        });
+    }
 
     public ServerApp(Ignite ignite) {
 
@@ -61,7 +63,7 @@ public class ServerApp {
 
             ignite.cacheNames().forEach(cacheName -> {
                 IgniteCache cache = ignite.cache(cacheName);
-                logger.info(() -> format("Cache: %s, total: %d, primary: %d, backup: %d, all: %d%n", cacheName,
+                logger.info(() -> format("Cache: %s, total: %d, primary: %d, backup: %d, all: %d", cacheName,
                     cache.size(), cache.localSize(PRIMARY), cache.localSize(BACKUP), cache.localSize(ALL)));
             });
 
