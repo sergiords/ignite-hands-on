@@ -1,6 +1,6 @@
 package com.github.sergiords.ignite.client.part2_data_grid;
 
-import com.github.sergiords.ignite.data.CacheData;
+import com.github.sergiords.ignite.data.Data;
 import com.github.sergiords.ignite.data.Team;
 import com.github.sergiords.ignite.data.User;
 import org.apache.ignite.Ignite;
@@ -17,7 +17,7 @@ import java.util.Optional;
 
 import static java.util.Comparator.comparing;
 
-public class Step2_ComputeAffinity implements Runnable {
+public class Step2_ComputeAffinity {
 
     private static final String CACHE_NAME = "my-compute-affinity-cache";
 
@@ -42,120 +42,55 @@ public class Step2_ComputeAffinity implements Runnable {
 
         /*
          * TODO:
-         * - populate cache
-         * - use CacheData#teams to find teams
-         * - use CacheData#users to find users for a team
-         */
-        CacheData.teams().forEach(team -> cache.put(team, CacheData.users(team)));
-
-        /*
-         * TODO:
-         * - get the affinity function associated to the cache named "my-compute-affinity-cache"
-         * - affinity is a function telling in which node keys are stored
-         * - use Ignite#affinity
+         * - affinity function tells in which node cache entries are stored
+         * - use ignite.affinity(...) to get affinity function associated to this cache
          */
         this.affinity = ignite.affinity(CACHE_NAME);
-    }
-
-    @Override
-    public void run() {
-
-        Team team = CacheData.teams().get(5);
-
-        int partition = findPartition(team);
-
-        ClusterNode nodeForPartition = findNode(partition);
-
-        ClusterNode nodeForKey = findNode(team);
-
-        String nodeIdForKey = findNodeId(team);
-
-        Optional<User> resultFromNode = executeOnNode(team);
-
-        Optional<User> resultFromAffinity = executeWithCacheAffinity(team);
-
-        System.out.printf("===== ComputeAffinity =====%n");
-        System.out.printf("Team %s is in partition %d%n", team, partition);
-        System.out.printf("Partition %d is on node %s%n", partition, nodeForPartition.attribute("node.id"));
-        System.out.printf("Team %s is on node %s [mapNodeToKey]%n", team, nodeForKey.attribute("node.id"));
-        System.out.printf("AffinityCall returned nodeId %s%n", nodeIdForKey);
-        System.out.printf("Team %s has TopCommitter %s [Result from targeted node]%n", team, resultFromNode);
-        System.out.printf("Team %s has TopCommitter %s [Result from affinityCall]%n", team, resultFromAffinity);
-    }
-
-    private int findPartition(Team team) {
 
         /*
          * TODO:
-         * - return the partition associated to the given team
-         * - use Affinity#partition
+         * - populate cache (Team => List<User>)
+         * - use Data.teams() to find teams
+         * - use Data.users(team) to find users for a team
          */
-        return affinity.partition(team);
+        Data.teams().forEach(team -> cache.put(team, Data.users(team)));
     }
 
-    private ClusterNode findNode(int partition) {
+    public Optional<User> findTopCommitter(Team team) {
 
         /*
          * TODO:
-          * - return ClusterNode associated to the given partition (the primary node)
-          * - use Affinity#mapPartitionTo..
+         * - use ignite.compute().affinityCall(...) to return user with most commits for the given team
+         * - notice that cache.get(team) call does not require network since team is hosted on node where computation is sent
          */
-        return affinity.mapPartitionToNode(partition);
+        return ignite.compute().affinityCall(CACHE_NAME, team, topCommitterSearch(team));
     }
 
-    private ClusterNode findNode(Team team) {
+    public Optional<User> findTopCommitterFullVersion(Team team) {
 
         /*
          * TODO:
-         * - return ClusterNode associated to the given team
-         * - this method is a shortcut of the two previous methods implemented above
-         * - use Affinity#mapKeyTo...
+         * - use affinity.mapKeyToNode(...) to get ClusterNode hosting the given team entry
          */
-        return affinity.mapKeyToNode(team);
-    }
-
-    private String findNodeId(Team team) {
+        ClusterNode node = affinity.mapKeyToNode(team);
 
         /*
          * TODO:
-         * - return nodeId from ClusterNode where the affinity call is executed
-         * - use IgniteCompute#affinityCall and System.getProperty("node.id")
+         * - use ignite.cluster().forNode(...) to get a ClusterGroup with previous node only
          */
-        return ignite.compute().affinityCall(CACHE_NAME, team, () -> System.getProperty("node.id"));
-    }
-
-    private Optional<User> executeOnNode(Team team) {
-
-        /*
-         * TODO:
-         * - return topCommitter for the given team using a simple IgniteCompute#call
-         * - use findNode to find ClusterNode where team is stored
-         * - use IgniteCluster#forNode to get ClusterGroup for this ClusterNode
-         */
-        ClusterNode node = findNode(team);
         ClusterGroup clusterGroup = ignite.cluster().forNode(node);
-        return ignite.compute(clusterGroup).call(topCommitterCallable(team));
-    }
-
-    private Optional<User> executeWithCacheAffinity(Team team) {
 
         /*
          * TODO:
-         * - return topCommitter for the given team using an IgniteCompute#affinityCall
-         * - this method is a shortcut of the previous methods used (ClusterNode -> ClusterGroup -> IgniteCompute#Call)
+         * - use ignite.compute(clusterGroup).call(...) to return user with most commits for the given team
+         * - notice this is the long version of ignite.compute().affinityCall(...)
          */
-        return ignite.compute().affinityCall(CACHE_NAME, team, topCommitterCallable(team));
+        return ignite.compute(clusterGroup).call(topCommitterSearch(team));
     }
 
-    private IgniteCallable<Optional<User>> topCommitterCallable(Team team) {
+    private IgniteCallable<Optional<User>> topCommitterSearch(Team team) {
 
-        /*
-         * TODO:
-         * - return an IgniteCallable which returns the user from the given team wo has the most commits
-         * - use the cache to find users in the team
-         */
         return () -> cache.get(team).stream().max(comparing(User::getCommits));
     }
-
 
 }
