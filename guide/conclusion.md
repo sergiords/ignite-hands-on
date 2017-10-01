@@ -1,6 +1,5 @@
 # Conclusion
 
-=========
 ## Take Away
 
 - Compute / Data Grid for **scalability**
@@ -9,7 +8,6 @@
 
 - Grid toolbox
 
-=========
 ## Use Cases
 
 - In-Memory platform / toolbox
@@ -18,26 +16,22 @@
 
 - Complex Searches
 
-=========
 ### SQL Grid
 
 ![img](img/sql-grid.png)
 
-=========
 ### In-Memory File System (IGFS)
 
 ![img](img/spark-igfs.png)
 
 Hadoop FileSystem or Hadoop FileSystem Cache.
 
-=========
 ## Spark RDD
 
 ![img](img/spark-rdd.png)
 
 IgniteRDD as in-memory shared Spark RDDs.
 
-=========
 ## Thank You !
 
 > Q/A &amp; Questions
