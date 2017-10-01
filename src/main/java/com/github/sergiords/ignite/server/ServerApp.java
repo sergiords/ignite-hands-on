@@ -7,11 +7,29 @@ import org.apache.ignite.Ignition;
 import org.apache.ignite.configuration.IgniteConfiguration;
 import org.apache.ignite.events.EventType;
 
+import java.io.OutputStream;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Logger;
 
+import static java.lang.String.format;
 import static org.apache.ignite.cache.CachePeekMode.*;
 
 public class ServerApp {
+
+    private static final Logger logger;
+
+    static {
+        System.setProperty("java.util.logging.SimpleFormatter.format", "[========]%n[%1$tT] %5$s%n[========]%n");
+        logger = Logger.getLogger("ServerApp");
+        logger.addHandler(new ConsoleHandler() {
+            @Override
+            public void setOutputStream(OutputStream out) {
+                // output logs to System.out instead of System.err !
+                super.setOutputStream(System.out);
+            }
+        });
+    }
 
     public static void main(String[] args) {
 
@@ -39,8 +57,8 @@ public class ServerApp {
 
             ignite.cacheNames().forEach(cacheName -> {
                 IgniteCache cache = ignite.cache(cacheName);
-                System.out.printf("Cache: %s, total: %d, primary: %d, backup: %d, all: %d%n", cacheName,
-                    cache.size(), cache.localSize(PRIMARY), cache.localSize(BACKUP), cache.localSize(ALL));
+                logger.info(() -> format("Cache: %s, total: %d, primary: %d, backup: %d, all: %d%n", cacheName,
+                    cache.size(), cache.localSize(PRIMARY), cache.localSize(BACKUP), cache.localSize(ALL)));
             });
 
             return true;
@@ -57,6 +75,7 @@ public class ServerApp {
 
     public static void print(String message) {
         callReference.set(message);
+        logger.info(message);
     }
 
     public static String watch() {
