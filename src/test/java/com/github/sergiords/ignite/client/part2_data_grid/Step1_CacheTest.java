@@ -1,6 +1,6 @@
 package com.github.sergiords.ignite.client.part2_data_grid;
 
-import com.github.sergiords.ignite.data.CacheData;
+import com.github.sergiords.ignite.data.Data;
 import com.github.sergiords.ignite.data.Team;
 import com.github.sergiords.ignite.server.ServerAppTest;
 import org.apache.ignite.Ignite;
@@ -52,7 +52,7 @@ public class Step1_CacheTest {
 
     private List<DynamicTest> testCacheUsage(IgniteCache<Integer, Team> cache, String name, int allFactor, int backupFactor) {
 
-        int expected = CacheData.teams().size();
+        int expected = Data.teams().size();
         int all = expected * allFactor;
         int backups = expected * backupFactor;
 
@@ -69,7 +69,9 @@ public class Step1_CacheTest {
                 step1.writeValues(cache);
                 assertThat(cache.size()).isEqualTo(expected);
             }),
-            dynamicTest("get value", () -> assertThat(step1.getByKey(cache, 42))
+
+            // Queries
+            dynamicTest("get value", () -> assertThat(step1.findByKey(cache, 42))
                 .isNotNull().satisfies(team -> assertThat(team.getId()).isEqualTo(42))),
             dynamicTest("scan query", () -> assertThat(step1.findByScanQuery(cache, "99"))
                 .extracting(Team::getId).hasSize(10).allMatch(id -> id % 100 == 99)),
@@ -77,7 +79,7 @@ public class Step1_CacheTest {
                 .extracting(Team::getId).hasSize(10).allMatch(id -> id % 100 == 99)),
             dynamicTest("sql query", () -> assertThat(step1.findBySqlQuery(cache, "%99"))
                 .extracting(Team::getId).hasSize(10).allMatch(id -> id % 100 == 99)),
-            dynamicTest("process entry", () -> assertThat(step1.processTeam(cache, 99))
+            dynamicTest("process entry", () -> assertThat(step1.processEntry(cache, 99))
                 .isNotNull().isEqualTo("TEAM99")),
 
             // Size

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class CacheData {
+public class Data {
 
     private static final List<String> COUNTRIES = Stream
         .of(Locale.FRANCE, Locale.CHINA, Locale.UK, Locale.CANADA, Locale.US, Locale.GERMANY, Locale.ITALY,
