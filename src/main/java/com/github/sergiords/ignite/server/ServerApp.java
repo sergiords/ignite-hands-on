@@ -8,6 +8,7 @@ import org.apache.ignite.configuration.IgniteConfiguration;
 import org.apache.ignite.events.EventType;
 
 import java.io.OutputStream;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Logger;
@@ -25,13 +26,16 @@ public class ServerApp {
         logger.addHandler(new ConsoleHandler() {
             @Override
             public void setOutputStream(OutputStream out) {
-                // output logs to System.out instead of System.err !
+                // output logs to System.out instead of System.err!
                 super.setOutputStream(System.out);
             }
         });
     }
 
     public static void main(String[] args) {
+
+        // Set a unique info in each node
+        System.setProperty("node.info", UUID.randomUUID().toString());
 
         /*
          * TODO:
@@ -83,15 +87,25 @@ public class ServerApp {
     }
 
     public static String getName() {
-        String nodeId = System.getProperty("node.id");
-        callReference.set(nodeId);
-        return nodeId;
-    }
-
-    public static String getThreadName() {
-        String name = Thread.currentThread().getName();
+        String name = name();
+        logger.info(() -> format("Return name: %s", name));
         callReference.set(name);
         return name;
+    }
+
+    private static String name() {
+        return System.getProperty("node.id");
+    }
+
+    public static String getInfo() {
+        String info = info();
+        logger.info(() -> format("Return info: %s", info));
+        callReference.set(info);
+        return info;
+    }
+
+    private static String info() {
+        return System.getProperty("node.info");
     }
 
 }
