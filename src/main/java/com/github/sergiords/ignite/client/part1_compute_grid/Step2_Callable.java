@@ -19,8 +19,8 @@ public class Step2_Callable {
 
         /*
          * TODO:
-         * - return the uppercase value of System.getProperty("node.id") from only one node
-         * - see IgniteCompute#call
+         * - use ignite.compute().call(...) to return a computation result from one (random) server node
+         * - return ServerApp.getName() in computation
          */
         return ignite.compute().call(ServerApp::getName);
     }
@@ -29,8 +29,8 @@ public class Step2_Callable {
 
         /*
          * TODO:
-         * - return the node server node names
-         * - use ServerApp.getName() and ignite.compute().broadcast()
+         * - use ignite.compute().broadcast(...) to return computation results from all server nodes
+         * - return ServerApp.getName() in computation
          */
         return ignite.compute().broadcast(ServerApp::getName);
     }
@@ -39,12 +39,13 @@ public class Step2_Callable {
 
         /*
          * TODO:
-         * - return uppercase thread name from a first node and lowercase thread name from a second node
-         * - use Thread.currentThread().getName() and IgniteCompute#call
+         * - use ignite.compute().call(...) to return computation results from two server nodes
+         * - return ServerApp.getName() in first computation
+         * - return ServerApp.getInfo() in second computation
          */
         return ignite.compute().call(asList(
             ServerApp::getName,
-            ServerApp::getThreadName
+            ServerApp::getInfo
         ));
     }
 
