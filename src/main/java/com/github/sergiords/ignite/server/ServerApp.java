@@ -95,6 +95,11 @@ public class ServerApp {
         return name;
     }
 
+    public static void send(Object event) {
+        logger.info(() -> format("Message received: %s", String.valueOf(event)));
+        callReference.set(event.toString());
+    }
+
     private static String name() {
         return System.getProperty("node.id");
     }

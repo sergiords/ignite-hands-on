@@ -1,13 +1,12 @@
 package com.github.sergiords.ignite.client.part5_messaging;
 
-import com.github.sergiords.ignite.client.ClientStep;
+import com.github.sergiords.ignite.server.ServerApp;
 import org.apache.ignite.Ignite;
 
+import java.util.Optional;
 import java.util.UUID;
 
-public class Step1_Messaging implements ClientStep {
-
-    private static final String TOPIC_NAME = "my-topic";
+public class Step1_Messaging implements AutoCloseable {
 
     private final Ignite ignite;
 
@@ -20,35 +19,32 @@ public class Step1_Messaging implements ClientStep {
         /*
          * TODO:
          * - register a remote listener for messages in topic "my-topic"
-         * - this listener should print the received message and return true, signaling it keeps listening to messages
-         * - use IgniteMessaging#remoteListen
+         * - this listener should send message to ServerApp.send(...) and return true, to keep on listening to messages
+         * - use ignite.messaging().remoteListen(...)
+         * TIP:
+         * - a remote listener registers listeners in each node
+         * - a local listener registers a listener in current node only (but listens to events in all nodes)
          */
-        listenerUUID = ignite.message().remoteListen(TOPIC_NAME, (uuid, message) -> {
-            System.out.println("message: " + message);
+        listenerUUID = ignite.message().remoteListen("my-topic", (uuid, message) -> {
+            ServerApp.send(message);
             return true;
         });
     }
 
-    @Override
-    public void run() {
+    public void sendMessage(String message) {
 
         /*
          * TODO:
-         * - send a message "Hello" to the topic "my-topic"
+         * - send given message to topic "my-topic"
+         * - use ignite.messaging().send(...)
          */
-        ignite.message().send("my-topic", "Hello");
-
-        /*
-         * TODO:
-         * - send a message "Hello from Server Node" to the topic "my-topic" from one of the server nodes
-         * - use IgniteCompute#run
-         */
-        ignite.compute().run(() -> ignite.message().send("my-topic", "Hello from Server Node"));
+        ignite.message().send("my-topic", message);
     }
 
     @Override
     public void close() {
-        ignite.message().stopRemoteListen(listenerUUID);
+        Optional.ofNullable(listenerUUID)
+            .ifPresent(ignite.message()::stopRemoteListen);
     }
 
 }
