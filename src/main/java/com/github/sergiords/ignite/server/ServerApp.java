@@ -38,7 +38,7 @@ public class ServerApp {
      * ==============================================
      */
 
-    private static final Logger logger;
+    public static final Logger logger;
 
     static {
 
