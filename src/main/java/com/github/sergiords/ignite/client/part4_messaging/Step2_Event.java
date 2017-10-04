@@ -1,4 +1,4 @@
-package com.github.sergiords.ignite.client.part5_messaging;
+package com.github.sergiords.ignite.client.part4_messaging;
 
 import com.github.sergiords.ignite.server.ServerApp;
 import org.apache.ignite.Ignite;

@@ -1,4 +1,4 @@
-package com.github.sergiords.ignite.client.part6_cluster;
+package com.github.sergiords.ignite.client.part5_cluster;
 
 import com.github.sergiords.ignite.client.ClientStep;
 import org.apache.ignite.Ignite;

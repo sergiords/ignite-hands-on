@@ -1,4 +1,4 @@
-package com.github.sergiords.ignite.client.part4_service;
+package com.github.sergiords.ignite.client.part3_service;
 
 import com.github.sergiords.ignite.server.Computer;
 import com.github.sergiords.ignite.server.ComputerService;
