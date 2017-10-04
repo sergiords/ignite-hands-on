@@ -38,7 +38,7 @@ class Step1_RunnableTest {
         step1.runInAllNodes();
 
         assertThat(ignite.compute().broadcast(ServerApp::watch))
-            .containsOnly("Hello Every Node", "Hello Every Node", "Hello Every Node");
+            .containsOnly("Hello All Nodes", "Hello All Nodes", "Hello All Nodes");
     }
 
     @Test
