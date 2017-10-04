@@ -2,6 +2,7 @@ package com.github.sergiords.ignite.client.part4_service;
 
 import com.github.sergiords.ignite.server.ServerAppTest;
 import org.apache.ignite.Ignite;
+import org.apache.ignite.cache.affinity.Affinity;
 import org.apache.ignite.services.ServiceDescriptor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
@@ -9,9 +10,11 @@ import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 @ExtendWith(ServerAppTest.class)
@@ -83,6 +86,30 @@ class Step1_ServiceTest {
                 assertThat(serviceDescriptor.totalCount()).isEqualTo(5);
                 assertThat(serviceDescriptor.maxPerNodeCount()).isEqualTo(2);
                 assertThat(serviceDescriptor.topologySnapshot()).hasSize(3).containsValues(1, 2, 2);
+            }),
+            computeInClient(),
+            computeInCallable()
+        );
+    }
+
+    @TestFactory
+    @DisplayName("affinity service")
+    List<DynamicTest> affinityService() {
+
+        ignite.services().cancelAll();
+
+        step.deployAffinityService();
+
+        ServiceDescriptor serviceDescriptor = getServiceDescriptor();
+
+        Affinity<String> affinity = ignite.affinity("my-cache");
+        UUID nodeForKey42 = affinity.mapKeyToNode("Key42").id();
+
+        return asList(
+            dynamicTest("should be deployed only on node hosting Key42", () -> {
+                assertThat(serviceDescriptor.totalCount()).isEqualTo(1);
+                assertThat(serviceDescriptor.maxPerNodeCount()).isEqualTo(1);
+                assertThat(serviceDescriptor.topologySnapshot()).containsOnly(entry(nodeForKey42, 1));
             }),
             computeInClient(),
             computeInCallable()
