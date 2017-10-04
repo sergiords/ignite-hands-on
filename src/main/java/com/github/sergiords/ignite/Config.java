@@ -100,7 +100,7 @@ public class Config {
         igniteConfiguration.setLoadBalancingSpi(loadBalancingSpi());
 
         // enable some events
-        igniteConfiguration.setIncludeEventTypes(EventType.EVT_JOB_FINISHED, EventType.EVT_CACHE_OBJECT_PUT);
+        igniteConfiguration.setIncludeEventTypes(EventType.EVT_CACHE_OBJECT_PUT);
 
         return igniteConfiguration;
     }

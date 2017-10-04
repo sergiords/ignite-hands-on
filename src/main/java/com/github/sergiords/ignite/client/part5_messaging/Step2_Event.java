@@ -1,15 +1,14 @@
 package com.github.sergiords.ignite.client.part5_messaging;
 
-import com.github.sergiords.ignite.client.ClientStep;
+import com.github.sergiords.ignite.server.ServerApp;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.events.EventType;
 
+import java.util.Optional;
 import java.util.UUID;
 
-public class Step2_Event implements ClientStep {
-
-    private static final String CACHE_NAME = "my-event-triggering-cache";
+public class Step2_Event implements AutoCloseable {
 
     private final Ignite ignite;
 
@@ -23,47 +22,39 @@ public class Step2_Event implements ClientStep {
 
         /*
          * TODO:
-         * - create a cache named "my-event-triggering-cache"
+         * - create a cache named "my-cache"
          */
-        this.cache = ignite.getOrCreateCache(CACHE_NAME);
+        this.cache = ignite.getOrCreateCache("my-cache");
 
         /*
          * TODO:
-         * - register an event listener for remote events
-         * - the listener should simply print the event it receives
-         * - ensure events are filtered remotely (on nodes where they are generated) using remoteFilter
-         * - listen for EventType.EVT_CACHE_OBJECT_PUT and EventType.EVT_JOB_FINISHED only (enabled for the hands on)
-         * - use IgniteEvents#remoteListen
+         * - register a local event listener for remote events
+         * - the listener should simply send event.message() to ServerApp.send(...) and return true, to keep on listening to events
+         * - set remote filter to listen to EventType.EVT_CACHE_OBJECT_PUT types only
+         * - use ignite.events().remoteListen(...)
+         * TIP:
+         * - event types are explicitly enabled in Config class (performance issue #1)
+         * - remote filter ensures events are filtered remotely (on nodes where they are generated) and not locally (performance issue #2)
          */
-        this.listenerUUID = ignite.events().remoteListen(
-            (uuid, event) -> {
-                System.out.printf("Event %d received on node: %s%n", event.type(), event.node().attribute("node.id"));
-                return true;
-            },
-            event -> event.type() == EventType.EVT_CACHE_OBJECT_PUT || event.type() == EventType.EVT_JOB_FINISHED
-        );
+        this.listenerUUID = ignite.events().remoteListen((uuid, event) -> {
+            ServerApp.send(event.shortDisplay());
+            return true;
+        }, event -> event.type() == EventType.EVT_CACHE_OBJECT_PUT);
     }
 
-    @Override
-    public void run() {
+    public void cacheValue() {
 
         /*
          * TODO:
-         * - run a job on a remote node to trigger the event listener when job finishes
+         * - put a "hello" => "Bob" entry in cache to trigger the previous event listener when value is cached
          */
-        ignite.compute().run(() -> System.out.println("Hello"));
-
-        /*
-         * TODO:
-         * - put a value in the cache to trigger the event listener when value is cached
-         */
-        cache.put("hello", "hello");
+        ignite.compute().run(() -> cache.put("hello", "Bob"));
     }
 
     @Override
     public void close() {
-        ignite.events().stopRemoteListen(listenerUUID);
-        ignite.destroyCache(CACHE_NAME);
+        Optional.ofNullable(listenerUUID)
+            .ifPresent(ignite.events()::stopRemoteListen);
     }
 
 }
