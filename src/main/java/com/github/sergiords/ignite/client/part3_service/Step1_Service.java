@@ -110,7 +110,7 @@ public class Step1_Service {
 
         /*
          * TODO:
-         * - create a partitioned cache named "my-cache" just like in Step1_Cache
+         * - create a partitioned cache named "my-cache" just like in Step2_CacheMode
          */
         CacheConfiguration<String, String> configuration = new CacheConfiguration<>("my-cache");
         configuration.setCacheMode(CacheMode.PARTITIONED);

@@ -15,11 +15,11 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-public class Step2_CacheQuery {
+public class Step1_CacheQuery {
 
     private final IgniteCache<Integer, Team> cache;
 
-    public Step2_CacheQuery(Ignite ignite) {
+    public Step1_CacheQuery(Ignite ignite) {
 
         /*
          * TODO:

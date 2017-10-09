@@ -17,15 +17,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 @ExtendWith(ServerAppTest.class)
-public class Step1_CacheTest {
+public class Step2_CacheModeTest {
 
     private final Ignite ignite;
 
-    private final Step1_Cache step1;
+    private final Step2_CacheMode step1;
 
-    public Step1_CacheTest(Ignite ignite) {
+    public Step2_CacheModeTest(Ignite ignite) {
         this.ignite = ignite;
-        this.step1 = new Step1_Cache(ignite);
+        this.step1 = new Step2_CacheMode(ignite);
     }
 
     @TestFactory

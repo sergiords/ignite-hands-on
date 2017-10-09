@@ -30,7 +30,7 @@ public class Step4_DataAffinity {
 
         /*
          * TODO:
-         * - create a partitioned cache named "my-data-affinity-cache" just like in Step1_Cache
+         * - create a partitioned cache named "my-data-affinity-cache" just like in Step2_CacheMode
          * - notice type for keys is AffinityKey<Team> not just Team
          */
         CacheConfiguration<AffinityKey<Team>, List<User>> configuration = new CacheConfiguration<>(CACHE_NAME);

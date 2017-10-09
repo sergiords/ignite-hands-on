@@ -16,15 +16,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 @ExtendWith(ServerAppTest.class)
-public class Step2_CacheQueryTest {
+public class Step1_CacheQueryTest {
 
     private final Ignite ignite;
 
-    private final Step2_CacheQuery step;
+    private final Step1_CacheQuery step;
 
-    public Step2_CacheQueryTest(Ignite ignite) {
+    public Step1_CacheQueryTest(Ignite ignite) {
         this.ignite = ignite;
-        this.step = new Step2_CacheQuery(ignite);
+        this.step = new Step1_CacheQuery(ignite);
     }
 
     @TestFactory

@@ -33,7 +33,7 @@ public class Step3_ComputeAffinity {
 
         /*
          * TODO:
-         * - create a partitioned cache named "my-compute-affinity-cache" just like in Step1_Cache
+         * - create a partitioned cache named "my-compute-affinity-cache" just like in Step2_CacheMode
          */
         CacheConfiguration<Team, List<User>> configuration = new CacheConfiguration<>(CACHE_NAME);
         configuration.setCacheMode(CacheMode.PARTITIONED);

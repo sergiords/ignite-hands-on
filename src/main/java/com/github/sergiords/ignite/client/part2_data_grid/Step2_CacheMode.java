@@ -8,11 +8,11 @@ import org.apache.ignite.configuration.CacheConfiguration;
 
 import java.util.Collection;
 
-public class Step1_Cache {
+public class Step2_CacheMode {
 
     private final Ignite ignite;
 
-    public Step1_Cache(Ignite ignite) {
+    public Step2_CacheMode(Ignite ignite) {
         this.ignite = ignite;
     }
 
