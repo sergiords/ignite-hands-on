@@ -3,8 +3,6 @@ package com.github.sergiords.ignite.client.part3_service;
 import com.github.sergiords.ignite.server.Computer;
 import com.github.sergiords.ignite.server.ComputerService;
 import org.apache.ignite.Ignite;
-import org.apache.ignite.cache.CacheMode;
-import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.services.ServiceConfiguration;
 
 public class Step1_Service {
@@ -110,12 +108,9 @@ public class Step1_Service {
 
         /*
          * TODO:
-         * - create a partitioned cache named "my-cache" just like in Step2_CacheMode
+         * - create a cache named "my-cache"
          */
-        CacheConfiguration<String, String> configuration = new CacheConfiguration<>("my-cache");
-        configuration.setCacheMode(CacheMode.PARTITIONED);
-
-        ignite.getOrCreateCache(configuration);
+        ignite.getOrCreateCache("my-cache");
 
         /*
          * TODO:

@@ -5,11 +5,9 @@ import com.github.sergiords.ignite.data.Team;
 import com.github.sergiords.ignite.data.User;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
-import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.cache.affinity.Affinity;
 import org.apache.ignite.cluster.ClusterGroup;
 import org.apache.ignite.cluster.ClusterNode;
-import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.lang.IgniteCallable;
 
 import java.util.List;
@@ -33,12 +31,9 @@ public class Step3_ComputeAffinity {
 
         /*
          * TODO:
-         * - create a partitioned cache named "my-compute-affinity-cache" just like in Step2_CacheMode
+         * - create a cache named "my-compute-affinity-cache" (default mode is partitioned)
          */
-        CacheConfiguration<Team, List<User>> configuration = new CacheConfiguration<>(CACHE_NAME);
-        configuration.setCacheMode(CacheMode.PARTITIONED);
-
-        this.cache = ignite.getOrCreateCache(configuration);
+        this.cache = ignite.getOrCreateCache(CACHE_NAME);
 
         /*
          * TODO:

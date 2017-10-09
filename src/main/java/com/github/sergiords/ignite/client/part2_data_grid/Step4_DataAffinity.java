@@ -5,7 +5,6 @@ import com.github.sergiords.ignite.data.Team;
 import com.github.sergiords.ignite.data.User;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
-import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.cache.affinity.AffinityKey;
 import org.apache.ignite.configuration.CacheConfiguration;
 
@@ -30,11 +29,11 @@ public class Step4_DataAffinity {
 
         /*
          * TODO:
-         * - create a partitioned cache named "my-data-affinity-cache" just like in Step2_CacheMode
+         * - create a cache configuration with name "my-data-affinity-cache"
          * - notice type for keys is AffinityKey<Team> not just Team
+         * - use this configuration to create a cache
          */
         CacheConfiguration<AffinityKey<Team>, List<User>> configuration = new CacheConfiguration<>(CACHE_NAME);
-        configuration.setCacheMode(CacheMode.PARTITIONED);
 
         this.cache = ignite.getOrCreateCache(configuration);
     }
@@ -74,12 +73,17 @@ public class Step4_DataAffinity {
          * - cache.localEntries() returns an Iterable... that's annoying
          * - use StreamSupport.stream(myIterator.spliterator(), false) to get a plain-old stream
          */
-        return ignite.compute().affinityCall(CACHE_NAME, country, () ->
-            StreamSupport.stream(cache.localEntries().spliterator(), false)
+        return ignite.compute().affinityCall(CACHE_NAME, country, () -> {
+
+            Iterable<Cache.Entry<AffinityKey<Team>, List<User>>> localEntries = cache.localEntries();
+
+            return StreamSupport.stream(localEntries.spliterator(), false)
                 .filter(entry -> entry.getKey().key().getCountry().equals(country))
                 .map(Cache.Entry::getValue)
                 .flatMap(List::stream)
-                .max(comparing(User::getCommits)));
+                .max(comparing(User::getCommits));
+
+        });
     }
 
 }
