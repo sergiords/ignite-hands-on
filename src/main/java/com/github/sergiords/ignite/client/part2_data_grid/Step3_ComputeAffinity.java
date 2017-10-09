@@ -17,7 +17,7 @@ import java.util.Optional;
 
 import static java.util.Comparator.comparing;
 
-public class Step2_ComputeAffinity {
+public class Step3_ComputeAffinity {
 
     private static final String CACHE_NAME = "my-compute-affinity-cache";
 
@@ -27,7 +27,7 @@ public class Step2_ComputeAffinity {
 
     private final IgniteCache<Team, List<User>> cache;
 
-    public Step2_ComputeAffinity(Ignite ignite) {
+    public Step3_ComputeAffinity(Ignite ignite) {
 
         this.ignite = ignite;
 

@@ -20,15 +20,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 @ExtendWith(ServerAppTest.class)
-class Step2_ComputeAffinityTest {
+class Step3_ComputeAffinityTest {
 
     private final Ignite ignite;
 
-    private final Step2_ComputeAffinity step2;
+    private final Step3_ComputeAffinity step2;
 
-    public Step2_ComputeAffinityTest(Ignite ignite) {
+    public Step3_ComputeAffinityTest(Ignite ignite) {
         this.ignite = ignite;
-        this.step2 = new Step2_ComputeAffinity(ignite);
+        this.step2 = new Step3_ComputeAffinity(ignite);
     }
 
     @TestFactory

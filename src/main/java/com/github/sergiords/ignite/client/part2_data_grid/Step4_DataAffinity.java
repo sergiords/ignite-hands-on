@@ -16,7 +16,7 @@ import java.util.stream.StreamSupport;
 
 import static java.util.Comparator.comparing;
 
-public class Step3_DataAffinity {
+public class Step4_DataAffinity {
 
     private static final String CACHE_NAME = "my-data-affinity-cache";
 
@@ -24,7 +24,7 @@ public class Step3_DataAffinity {
 
     private final IgniteCache<AffinityKey<Team>, List<User>> cache;
 
-    public Step3_DataAffinity(Ignite ignite) {
+    public Step4_DataAffinity(Ignite ignite) {
 
         this.ignite = ignite;
 

@@ -21,15 +21,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 @ExtendWith(ServerAppTest.class)
-class Step2_DataAffinityTest {
+class Step4_DataAffinityTest {
 
     private final Ignite ignite;
 
-    private final Step3_DataAffinity step;
+    private final Step4_DataAffinity step;
 
-    public Step2_DataAffinityTest(Ignite ignite) {
+    public Step4_DataAffinityTest(Ignite ignite) {
         this.ignite = ignite;
-        this.step = new Step3_DataAffinity(ignite);
+        this.step = new Step4_DataAffinity(ignite);
     }
 
     @TestFactory
