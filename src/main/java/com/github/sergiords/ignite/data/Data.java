@@ -20,10 +20,6 @@ public class Data {
             .collect(Collectors.toList());
     }
 
-    public static List<String> getCountries() {
-        return COUNTRIES;
-    }
-
     public static List<User> users(Team team) {
         return IntStream.range(0, 1000).boxed()
             .map(id -> new User(team, id, "User" + id, (id * id) % 1234))
