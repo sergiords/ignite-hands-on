@@ -1,10 +1,15 @@
 package com.github.sergiords.ignite.client.part5_cluster;
 
-import com.github.sergiords.ignite.client.ClientStep;
+import com.github.sergiords.ignite.server.ServerApp;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.cluster.ClusterGroup;
 
-public class Step1_Cluster implements ClientStep {
+import java.util.Collection;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
+public class Step1_Cluster {
 
     private final Ignite ignite;
 
@@ -12,55 +17,27 @@ public class Step1_Cluster implements ClientStep {
         this.ignite = ignite;
     }
 
-    @Override
-    public void run() {
-
-        runInNodesWithLowCpuLoad();
-
-        runInNodeWithAttributes();
-
-    }
-
-    private void runInNodesWithLowCpuLoad() {
-
-        /*
-         * TODO:
-         * - get a cluster group with nodes whose CpuLoad is under 50%
-         * - use IgniteCluster#forPredicate and ClusterNode#metrics to find appropriate nodes
-         */
-        ClusterGroup clusterGroup = ignite.cluster().forPredicate(node -> node.metrics().getCurrentCpuLoad() < 0.5);
-
-        /*
-         * TODO:
-         * - print "Hello cluster group" on all nodes from clusterGroup above
-         * - use Ignite#compute#broadcast
-         */
-        ignite.compute(clusterGroup).broadcast(() -> System.out.println("Hello cluster group"));
-    }
-
-    private void runInNodeWithAttributes() {
+    public ClusterGroup customClusterGroup() {
 
         /*
          * TODO:
          * - get a cluster group composed of nodes with attribute "node.id" = "Server1" or "node.id" = "Server2"
-         * - yes attribute method exposes System.properties which are used throughout almost all hands on steps
-         * - use IgniteCluster#forPredicate and ClusterNode#attribute to find appropriate nodes
+         * - use ignite.cluster().forPredicate(...) to find appropriate nodes
+         * FYI:
+         * - ClusterNode.attribute() method exposes system property of remote server node
          */
-        ClusterGroup clusterGroup = ignite.cluster().forPredicate(
-            node -> "node1".equals(node.attribute("node.id")) || "node2".equals(node.attribute("node.id"))
-        );
+        List<String> expectedNodeIds = asList("Server1", "Server2");
+        return ignite.cluster().forPredicate(node -> expectedNodeIds.contains(node.<String>attribute("node.id")));
+    }
+
+    public Collection<String> runInCustomClusterGroup() {
 
         /*
          * TODO:
-         * - print "Hello node1 and node2" on all nodes from clusterGroup above
-         * - use IgniteCompute#broadcast
+         * - run a computation returning Server.getName() for all nodes in previous custom cluster group
+         * - use ignite.compute(...).broadcast(...)
          */
-        ignite.compute(clusterGroup).broadcast(() -> System.out.println("Hello node1 and node2"));
-    }
-
-    @Override
-    public void close() {
-
+        return ignite.compute(customClusterGroup()).broadcast(ServerApp::getName);
     }
 
 }
