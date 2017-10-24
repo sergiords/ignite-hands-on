@@ -2,6 +2,8 @@ package com.github.sergiords.ignite;
 
 import org.apache.ignite.configuration.IgniteConfiguration;
 import org.apache.ignite.events.EventType;
+import org.apache.ignite.plugin.extensions.communication.Message;
+import org.apache.ignite.spi.communication.CommunicationSpi;
 import org.apache.ignite.spi.communication.tcp.TcpCommunicationSpi;
 import org.apache.ignite.spi.discovery.DiscoverySpi;
 import org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi;
@@ -49,7 +51,7 @@ public class Config {
     /*
      * Communication SPI: how nodes send tasks to each other
      */
-    private static TcpCommunicationSpi communicationSpi() {
+    private static CommunicationSpi<Message> communicationSpi() {
 
         TcpCommunicationSpi communicationSpi = new TcpCommunicationSpi();
         communicationSpi.setLocalAddress("localhost");
