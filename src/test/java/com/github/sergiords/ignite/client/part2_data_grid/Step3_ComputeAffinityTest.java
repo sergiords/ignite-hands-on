@@ -8,6 +8,7 @@ import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.cache.affinity.Affinity;
 import org.apache.ignite.cluster.ClusterNode;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
@@ -24,16 +25,20 @@ class Step3_ComputeAffinityTest {
 
     private final Ignite ignite;
 
-    private final Step3_ComputeAffinity step2;
-
     public Step3_ComputeAffinityTest(Ignite ignite) {
         this.ignite = ignite;
-        this.step2 = new Step3_ComputeAffinity(ignite);
+    }
+
+    @BeforeEach
+    void setUp() {
+        ignite.destroyCaches(ignite.cacheNames());
     }
 
     @TestFactory
     @DisplayName("Should execute lambda with affinity (in server node hosting data as primary key)")
     List<DynamicTest> computeAffinity() {
+
+        Step3_ComputeAffinity step = new Step3_ComputeAffinity(ignite);
 
         String name = "my-compute-affinity-cache";
         IgniteCache<Team, List<User>> cache = ignite.cache(name);
@@ -48,11 +53,11 @@ class Step3_ComputeAffinityTest {
             dynamicTest("cache should have 1000 teams", () -> assertThat(cache.size()).isEqualTo(1000)),
 
             dynamicTest("findTopCommitter() should be executed on node " + team42NodeName, () ->
-                assertThat(step2.findTopCommitter(team42))
+                assertThat(step.findTopCommitter(team42))
                     .hasValueSatisfying(user -> assertThat(user.getId()).isEqualTo(423))),
 
             dynamicTest("findTopCommitterFullVersion() should be executed on node " + team42NodeName, () ->
-                assertThat(step2.findTopCommitterFullVersion(team42))
+                assertThat(step.findTopCommitterFullVersion(team42))
                     .hasValueSatisfying(user -> assertThat(user.getId()).isEqualTo(423)))
         );
     }

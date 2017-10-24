@@ -7,6 +7,7 @@ import com.github.sergiords.ignite.server.ServerAppTest;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.cache.affinity.AffinityKey;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
@@ -25,16 +26,20 @@ class Step4_DataAffinityTest {
 
     private final Ignite ignite;
 
-    private final Step4_DataAffinity step;
-
     public Step4_DataAffinityTest(Ignite ignite) {
         this.ignite = ignite;
-        this.step = new Step4_DataAffinity(ignite);
+    }
+
+    @BeforeEach
+    void setUp() {
+        ignite.destroyCaches(ignite.cacheNames());
     }
 
     @TestFactory
     @DisplayName("Data affinity")
     List<DynamicTest> computeAffinity() {
+
+        Step4_DataAffinity step = new Step4_DataAffinity(ignite);
 
         String name = "my-data-affinity-cache";
         IgniteCache<Team, List<User>> cache = ignite.cache(name);

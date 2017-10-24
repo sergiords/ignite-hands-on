@@ -5,6 +5,7 @@ import com.github.sergiords.ignite.server.ServerAppTest;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.awaitility.Duration;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -18,6 +19,11 @@ class Step2_EventTest {
 
     Step2_EventTest(Ignite ignite) {
         this.ignite = ignite;
+    }
+
+    @BeforeEach
+    void setUp() {
+        ignite.destroyCaches(ignite.cacheNames());
     }
 
     @Test

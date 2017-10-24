@@ -27,11 +27,7 @@ public class ServerAppTest implements ParameterResolver, BeforeTestExecutionCall
 
         try {
 
-            //
             ignite = Ignition.start(igniteConfiguration);
-
-            // reset all caches
-            ignite.destroyCaches(ignite.cacheNames());
 
         } catch (Exception e) {
             throw new TestAbortedException(CLUSTER_MESSAGE);

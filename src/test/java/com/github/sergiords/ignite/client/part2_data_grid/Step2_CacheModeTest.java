@@ -3,6 +3,7 @@ package com.github.sergiords.ignite.client.part2_data_grid;
 import com.github.sergiords.ignite.server.ServerAppTest;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
@@ -26,6 +27,11 @@ public class Step2_CacheModeTest {
     public Step2_CacheModeTest(Ignite ignite) {
         this.ignite = ignite;
         this.step1 = new Step2_CacheMode(ignite);
+    }
+
+    @BeforeEach
+    void setUp() {
+        ignite.destroyCaches(ignite.cacheNames());
     }
 
     @TestFactory

@@ -96,6 +96,8 @@ class Step1_ServiceTest {
     @DisplayName("affinity service")
     List<DynamicTest> affinityService() {
 
+        ignite.destroyCaches(ignite.cacheNames());
+
         ignite.services().cancelAll();
 
         step.deployAffinityService();

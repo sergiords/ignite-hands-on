@@ -4,6 +4,7 @@ import com.github.sergiords.ignite.data.Team;
 import com.github.sergiords.ignite.server.ServerAppTest;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
@@ -20,16 +21,20 @@ public class Step1_CacheQueryTest {
 
     private final Ignite ignite;
 
-    private final Step1_CacheQuery step;
-
     public Step1_CacheQueryTest(Ignite ignite) {
         this.ignite = ignite;
-        this.step = new Step1_CacheQuery(ignite);
+    }
+
+    @BeforeEach
+    void setUp() {
+        ignite.destroyCaches(ignite.cacheNames());
     }
 
     @TestFactory
     @DisplayName("cache query step")
     List<DynamicTest> cacheQuery() {
+
+        Step1_CacheQuery step = new Step1_CacheQuery(ignite);
 
         IgniteCache<Integer, Team> cache = ignite.cache("my-cache");
 
