@@ -126,13 +126,17 @@ class Step1_ServiceTest {
     }
 
     private DynamicTest computeInClient() {
-        return dynamicTest("should compute sum using proxy", () ->
-            assertThat(step.runServiceUsingProxy(1, 2)).isEqualTo(3));
+        return dynamicTest("should compute sum using proxy", () -> {
+            Integer result = step.runServiceUsingProxy(1, 2);
+            assertThat(result).isEqualTo(3);
+        });
     }
 
     private DynamicTest computeInCallable() {
-        return dynamicTest("should compute sum using proxy inside a callable", () ->
-            assertThat(step.runServiceInCallable(1, 2)).isEqualTo(3));
+        return dynamicTest("should compute sum using proxy inside a callable", () -> {
+            Integer result = step.runServiceInCallable(1, 2);
+            assertThat(result).isEqualTo(3);
+        });
     }
 
 }

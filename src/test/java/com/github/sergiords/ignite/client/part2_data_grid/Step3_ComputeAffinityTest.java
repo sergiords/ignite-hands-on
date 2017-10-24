@@ -15,6 +15,7 @@ import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,15 +51,21 @@ class Step3_ComputeAffinityTest {
 
         return asList(
 
-            dynamicTest("cache should have 1000 teams", () -> assertThat(cache.size()).isEqualTo(1000)),
+            dynamicTest("cache should have 1000 teams", () -> {
+                int result = cache.size();
+                assertThat(result).isEqualTo(1000);
+            }),
 
-            dynamicTest("findTopCommitter() should be executed on node " + team42NodeName, () ->
-                assertThat(step.findTopCommitter(team42))
-                    .hasValueSatisfying(user -> assertThat(user.getId()).isEqualTo(423))),
+            dynamicTest("findTopCommitter() should be executed on node " + team42NodeName, () -> {
+                Optional<User> result = step.findTopCommitter(team42);
+                assertThat(result).hasValueSatisfying(user -> assertThat(user.getId()).isEqualTo(423));
+            }),
 
-            dynamicTest("findTopCommitterFullVersion() should be executed on node " + team42NodeName, () ->
-                assertThat(step.findTopCommitterFullVersion(team42))
-                    .hasValueSatisfying(user -> assertThat(user.getId()).isEqualTo(423)))
+            dynamicTest("findTopCommitterFullVersion() should be executed on node " + team42NodeName, () -> {
+                Optional<User> result = step.findTopCommitterFullVersion(team42);
+                assertThat(result).hasValueSatisfying(user -> assertThat(user.getId()).isEqualTo(423));
+            })
+
         );
     }
 
