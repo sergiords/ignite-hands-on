@@ -46,7 +46,7 @@ public class ServerApp {
         System.setProperty("node.info", UUID.randomUUID().toString());
 
         // Configure logging
-        System.setProperty("java.util.logging.SimpleFormatter.format", "[========]%n[%1$tT] %5$s%n[========]%n");
+        System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tT] %5$s%n");
         logger = Logger.getLogger("ServerApp");
         logger.addHandler(new ConsoleHandler() {
             @Override
