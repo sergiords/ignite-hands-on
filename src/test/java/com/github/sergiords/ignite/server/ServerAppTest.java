@@ -10,24 +10,33 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.opentest4j.TestAbortedException;
 
+import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ServerAppTest implements ParameterResolver, BeforeTestExecutionCallback {
 
     private static final String CLUSTER_MESSAGE = "3 server nodes must be started before running tests";
 
+    private static final AtomicReference<Ignite> IGNITE_REF = new AtomicReference<>();
+
     private final Ignite ignite;
 
     public ServerAppTest() {
 
-        IgniteConfiguration igniteConfiguration = Config.igniteConfiguration()
-            .setClientMode(true)
-            .setConsistentId("Client")
-            .setIgniteInstanceName(UUID.randomUUID().toString());
-
         try {
 
-            ignite = Ignition.start(igniteConfiguration);
+            this.ignite = Optional.ofNullable(IGNITE_REF.get()).orElseGet(() -> {
+
+                IgniteConfiguration igniteConfiguration = Config.igniteConfiguration()
+                    .setClientMode(true)
+                    .setConsistentId("Client")
+                    .setIgniteInstanceName(UUID.randomUUID().toString());
+
+                return Ignition.start(igniteConfiguration);
+            });
+
+            IGNITE_REF.set(this.ignite);
 
         } catch (Exception e) {
             throw new TestAbortedException(CLUSTER_MESSAGE);
