@@ -13,13 +13,15 @@ public class ClientApp {
 
         // Use given configuration to avoid multi-cast collisions and stick to localhost :-)
         IgniteConfiguration configuration = Config.igniteConfiguration();
+
+        // Set this configuration to client mode (do not host data, do not run jobs)
         configuration.setClientMode(true);
 
-        // Use this client as a playground, when you are ready, launch unit tests
+        // Use this client as a playground, when you are ready, go to part1 and launch unit tests
 
         try (Ignite ignite = Ignition.start(configuration)) {
 
-            ignite.compute().broadcast(() -> System.out.println("\nHello World\n"));
+            ignite.compute().broadcast(() -> System.out.println("Hello World"));
 
         }
 
