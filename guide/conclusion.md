@@ -6,7 +6,7 @@
 
 - Collocation / Transaction for **operational systems**
 
-- Grid toolbox
+- Grid toolbox / Partition choice is the key
 
 ## Use Cases
 
@@ -35,3 +35,5 @@ IgniteRDD as in-memory shared Spark RDDs.
 ## Thank You !
 
 > Q/A &amp; Questions
+
+[Home](../readme.md) | [Back](./part5_cluster.md)
