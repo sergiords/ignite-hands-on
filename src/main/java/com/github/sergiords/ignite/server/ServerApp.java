@@ -1,11 +1,8 @@
 package com.github.sergiords.ignite.server;
 
 import com.github.sergiords.ignite.Config;
-import org.apache.ignite.Ignite;
-import org.apache.ignite.IgniteCache;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.configuration.IgniteConfiguration;
-import org.apache.ignite.events.EventType;
 
 import java.io.OutputStream;
 import java.util.UUID;
@@ -14,7 +11,6 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Logger;
 
 import static java.lang.String.format;
-import static org.apache.ignite.cache.CachePeekMode.*;
 
 public class ServerApp {
 
@@ -22,14 +18,11 @@ public class ServerApp {
 
         /*
          * TODO:
-         * - start an ignite instance with configuration from Config#igniteConfiguration
+         * - start an ignite instance with configuration from Config.igniteConfiguration()
          */
         IgniteConfiguration configuration = Config.igniteConfiguration();
 
-        Ignite ignite = Ignition.start(configuration);
-
-        // Instance to check what is happening on server nodes during tests
-        new ServerApp(ignite);
+        Ignition.start(configuration);
     }
 
     /*
@@ -55,22 +48,6 @@ public class ServerApp {
                 super.setOutputStream(System.out);
             }
         });
-    }
-
-    public ServerApp(Ignite ignite) {
-
-        ignite.events().localListen(event -> {
-
-            ignite.cacheNames().forEach(cacheName -> {
-                IgniteCache cache = ignite.cache(cacheName);
-                logger.info(() -> format("Cache: %s, total: %d, primary: %d, backup: %d, all: %d", cacheName,
-                    cache.size(), cache.localSize(PRIMARY), cache.localSize(BACKUP), cache.localSize(ALL)));
-            });
-
-            return true;
-
-        }, EventType.EVT_NODE_LEFT, EventType.EVT_CACHE_REBALANCE_STOPPED, EventType.EVT_NODE_FAILED, EventType.EVT_NODE_JOINED);
-
     }
 
     private static final AtomicReference<String> callReference = new AtomicReference<>();
