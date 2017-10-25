@@ -18,15 +18,15 @@ import static org.assertj.core.api.Assertions.entry;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 @ExtendWith(ServerAppTest.class)
-class Step1_ServiceTest {
+class Step1_ServiceGridTest {
 
     private final Ignite ignite;
 
-    private final Step1_Service step;
+    private final Step1_ServiceGrid step;
 
-    public Step1_ServiceTest(Ignite ignite) {
+    public Step1_ServiceGridTest(Ignite ignite) {
         this.ignite = ignite;
-        this.step = new Step1_Service(ignite);
+        this.step = new Step1_ServiceGrid(ignite);
     }
 
     @TestFactory

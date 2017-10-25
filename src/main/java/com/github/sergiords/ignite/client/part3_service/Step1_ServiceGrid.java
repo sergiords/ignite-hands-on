@@ -5,13 +5,13 @@ import com.github.sergiords.ignite.server.ComputerService;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.services.ServiceConfiguration;
 
-public class Step1_Service {
+public class Step1_ServiceGrid {
 
     private static final String SERVICE_NAME = "my-service";
 
     private final Ignite ignite;
 
-    public Step1_Service(Ignite ignite) {
+    public Step1_ServiceGrid(Ignite ignite) {
 
         this.ignite = ignite;
     }
