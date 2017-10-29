@@ -14,10 +14,8 @@ apply plugin: 'org.junit.platform.gradle.plugin'
 
 repositories { mavenCentral() }
 
-tasks.withType(JavaCompile) {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 dependencies {
 
@@ -26,6 +24,7 @@ dependencies {
 
     testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0")
     testCompile("org.junit.jupiter:junit-jupiter-engine:5.0.0")
+
     testCompile("org.assertj:assertj-core:3.8.0")
     testCompile("org.awaitility:awaitility:3.0.0")
 
