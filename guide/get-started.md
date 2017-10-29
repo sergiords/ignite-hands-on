@@ -21,7 +21,7 @@ public class Main {
 }
 ```
 >/!\ For the hands on, do not use default configuration settings, otherwise you'll be joining a cluster with all nodes from local network.
->Instead use configuration from **Config.igniteConfiguration()**
+>Instead use configuration from **Config.igniteConfiguration()**.
 
 ## Server Nodes
 
