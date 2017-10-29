@@ -5,7 +5,9 @@ This part describes how **ClusterNodes** can be used and grouped in **ClusterGro
 
 ## Cluster Nodes
 
-**ClusterNode** class represents **a node** in the cluster. An instance can be retrieved using **ignite.cluster()**. For example:
+**ClusterNode** class represents **a node** in the cluster.
+
+An instance can be retrieved like this:
 
 ```java
 import org.apache.ignite.*;
@@ -27,8 +29,9 @@ public class App {
 
 ## Cluster Groups
 
-**ClusterGroup** class represents **a set of nodes** in the cluster. ClusterGroup class is used in many Ignite methods to **target the set of nodes** Ignites uses **to distribute operations**. An instance can be retrieved like this:
+**ClusterGroup** class represents **a set of nodes** in the cluster.
 
+It can be used to **restrict** the set of nodes where an operation is executed. An instance can be retrieved like this:
 ```java
 import org.apache.ignite.*;
 import org.apache.ignite.cluster.*;
@@ -45,10 +48,7 @@ public class App {
 }
 ```
 
->Complete **TODO**s in **Step1_Cluster** to fix all tests in **Step1_ClusterTest** .
-
-
-ClusterGroup class can be used in almost all Ignite APIs to constrain nodes on which operations are executed.
+>Complete **TODO**s in **Step1_Cluster** to fix all tests in **Step1_ClusterTest**.
 
 
 [Home](../readme.md) | [Back](part4_messaging.md) | [Next](./conclusion.md)

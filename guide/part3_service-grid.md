@@ -6,9 +6,6 @@
 
 Ignite allows deploying multiple instances of a given **Service** across the cluster and ensures **proper deployment** and **fault tolerance** of deployed services.
 
-
-## Example
-
 ```java
 import org.apache.ignite.*;
 import org.apache.ignite.services.*;
@@ -19,25 +16,12 @@ public class App {
 
         Ignite ignite = Ignition.start();
 
-        ServiceConfiguration configuration = new ServiceConfiguration();
-        configuration.setService(new MyService());
-        configuration.setName("my-service");
-        configuration.setTotalCount(6);
-        configuration.setMaxPerNodeCount(3);
-
-        ignite.services().deploy(configuration);
+        ignite.services().deployClusterSingleton("my-service", new MyService());
 
         String value = ignite.services().service("my-service").myServiceComputation();
     }
 }
 ```
-
-Here Ignite deploys **6 instances** across the cluster with **3 instances max per node**.
-
-`myServiceComputation` method is then called on a **locally deployed service instance**.
-
-
-## Service Grid
 
 Service deployment can be adjusted by 4 means:
 

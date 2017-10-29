@@ -4,11 +4,9 @@ In this part we learn how to use Ignite **messaging &amp; events system**.
 
 ## Messaging
 
-Ignite provides a **topic-based** messaging system.
+A node can **subscribe** to messages **published** on a **topic** from local or remote nodes.
 
-A node can **subscribe** to messages **published** on a **topic** from local node or remote nodes.
-
-Subscribing to topic messages and publishing a message to a topic is as simple as:
+Subscribing and publishing messages to a topic is as simple as:
 ```java
 import org.apache.ignite.*;
 
@@ -28,14 +26,12 @@ public class App {
 }
 ```
 
->Complete **TODO**s **Step1_Messaging** to fix all tests in **Step1_MessagingTest**.
+>Complete **TODO**s in **Step1_Messaging** to fix all tests in **Step1_MessagingTest**.
 
 
 ## Events
 
-Ignite also provides an **event-based** notification system.
-
-A node can **subscribe** to events **triggered** on local node or remote nodes.
+A node can also **subscribe** to events **triggered** on local or remote nodes.
 
 Events can be things such as: value put in cache, job execution end or failure, node leaving or joining cluster...
 
@@ -50,7 +46,7 @@ public class App {
 
         ignite.events().remoteListen(
             (nodeId, event) -> {
-                System.out.println("event: " + event);
+                System.out.println("Received event: " + event);
                 return true; // keep on listening to new events
             },
             event -> event.type() == EventType.EVT_CACHE_OBJECT_PUT

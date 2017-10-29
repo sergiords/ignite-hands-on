@@ -96,8 +96,8 @@ public class App {
         cache.put(new AffinityKey<>("key3", "group2"), "value3");
         cache.put(new AffinityKey<>("key4", "group2"), "value4");
 
-        String value = ignite.compute().affinityCall("my-cache", "group1",
-            () -> cache.get("key1") + cache.get("key2"));
+        String value = ignite.compute()
+            .affinityCall("my-cache", "group1", () -> cache.get("key1") + cache.get("key2"));
     }
 }
 ```

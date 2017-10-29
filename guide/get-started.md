@@ -66,8 +66,5 @@ A cluster can perfectly work with **server nodes** only. Using **client nodes** 
 >```
 >Check each **ServerApp** console!
 
-## Well-done !
-
-We are now ready to go for next steps.
 
 [Home](../readme.md) | [Back](./introduction.md) | [Next](./part1_compute-grid.md)
