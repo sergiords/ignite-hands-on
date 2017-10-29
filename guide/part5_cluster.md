@@ -1,7 +1,5 @@
 # Cluster
 
-![img](img/cluster.png)
-
 This part describes how **ClusterNodes** can be used and grouped in **ClusterGroup** instances.
 
 
@@ -43,11 +41,9 @@ public class App {
         ClusterGroup clusterGroup = ignite.cluster().forServers();
 
         ignite.compute(clusterGroup).run(() -> System.out.println("Hello Server Nodes"));
-
     }
 }
 ```
-
 
 >Complete **TODO**s in **Step1_Cluster** to fix all tests in **Step1_ClusterTest** .
 

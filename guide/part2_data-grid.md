@@ -31,7 +31,7 @@ public class App {
 
 Cache can be queried by key or using SQL, Text or Scan queries.
 
->Complete TODOs in **Step1_CacheQuery** to fix all tests in **Step2_CacheQueryTest**.
+>Complete **TODO**s in **Step1_CacheQuery** to fix all tests in **Step2_CacheQueryTest**.
 
 
 ## Cache Modes
@@ -42,7 +42,7 @@ Cache entry distribution across server nodes can be adjusted by 3 means:
 - **Replicated Cache**: each entry is in one **primary node** and **n-1 backup nodes** (**n** is cluster size).
 - **Cache Backups**: each entry is in one **primary node** and **x backup nodes** (**x** is backup size).
 
->Complete TODOs in **Step2_CacheMode** to fix all tests in **Step2_CacheModeTest**.
+>Complete **TODO**s in **Step2_CacheMode** to fix all tests in **Step2_CacheModeTest**.
 
 
 ## Compute affinity
@@ -72,7 +72,7 @@ public class App {
 Here Ignite does no network call on ``cache.get("key2")`` call because `affinityCall()` is **executed on node where `"key2"` is stored**.
 
 
->Complete TODOS in **Step3_ComputeAffinity** to fix all tests in **Step3_ComputeAffinityTest**.
+>Complete **TODO**s in **Step3_ComputeAffinity** to fix all tests in **Step3_ComputeAffinityTest**.
 
 
 ## Data affinity
@@ -107,7 +107,7 @@ Ignite ensures `key1` and `key2` are hosted on the same node since they are stor
 `affinityCall()` is **executed on node where keys associated to `"group1"`** are stored.
 
 
->Complete TODOS in **Step4_DataAffinity** to fix all tests in **Step2_DataAffinityTest**.
+>Complete **TODO**s in **Step4_DataAffinity** to fix all tests in **Step2_DataAffinityTest**.
 
 
 ## Spot the difference
