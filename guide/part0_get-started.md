@@ -69,4 +69,4 @@ A cluster can perfectly work with **server nodes** only. Using **client nodes** 
 >Check each **ServerApp** console!
 
 
-[Home](../readme.md) | [Back](./introduction.md) | [Next](./part1_compute-grid.md)
+[Home](../readme.md) | [Back](a_introduction.md) | [Next](./part1_compute-grid.md)

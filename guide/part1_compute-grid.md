@@ -73,4 +73,4 @@ Try it !
 - Case 2: value is computed **outside** the lambda, its value is fixed on **client node**, serialized and sent to **server node**.
 
 
-[Home](../readme.md) | [Back](./get-started.md) | [Next](./part2_data-grid.md)
+[Home](../readme.md) | [Back](part0_get-started.md) | [Next](./part2_data-grid.md)
