@@ -26,6 +26,7 @@ public class Main {
 ## Server Nodes
 
 By default, **server nodes** participate in all computing and caching operations in the cluster.
+
 In this hands-on **server nodes** are plain-old Java applications.
 
 >Complete **TODO** in **ServerApp**.
