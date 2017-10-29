@@ -4,9 +4,7 @@
 
 **Services** are used in **computations** to avoid heavy lambda serializations.
 
-Ignite allows deploying multiple instances of a given **Service** across the cluster.
-
-Ignite ensures **proper deployment** and **fault tolerance** of deployed services. 
+Ignite allows deploying multiple instances of a given **Service** across the cluster and ensures **proper deployment** and **fault tolerance** of deployed services.
 
 
 ## Example
@@ -16,6 +14,7 @@ import org.apache.ignite.*;
 import org.apache.ignite.services.*;
 
 public class App {
+
     public static void main(String[] args) {
 
         Ignite ignite = Ignition.start();
@@ -33,12 +32,12 @@ public class App {
 }
 ```
 
-Here Ignite deploys **6 instances** across the cluster with **3 instances max per node**. 
+Here Ignite deploys **6 instances** across the cluster with **3 instances max per node**.
 
 `myServiceComputation` method is then called on a **locally deployed service instance**.
 
 
-## Exercise
+## Service Grid
 
 Service deployment can be adjusted by 4 means:
 
@@ -47,7 +46,7 @@ Service deployment can be adjusted by 4 means:
 - **Custom service**: **x instances** are deployed in **every node** with **y** instances maximum per node.
 - **Affinity service**: service is deployed according to cache entry location (**service is collocated with data**)
 
-Complete TODOs in **Step3_ServiceGrid** class and make all tests in **Step3_ServiceGridTest** pass.
+>Complete **TODO**s in **Step3_ServiceGrid** to fix all tests in **Step3_ServiceGridTest**.
 
 
 [Home](../readme.md) | [Back](./part2_data-grid.md) | [Next](part4_messaging.md)

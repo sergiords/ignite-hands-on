@@ -22,21 +22,22 @@ public class Main {
     }
 }
 ```
-This code prints `Hello World` in one **server node**. 
+This code prints `Hello World` in one **server node** only.
 
 
 ## Runnable
 
-An **IgniteRunnable** does not return any result. It just sends computations to the cluster.
+An **IgniteRunnable** is executed on a server node without a result being returned.
 
-Complete TODOs in **Step1_Runnable** and make all tests in **Step1_RunnableTest** pass.
+
+>Complete **TODO**s in **Step1_Runnable** to fix all tests in **Step1_RunnableTest**.
 
 
 ## Callable
 
 An **IgniteCallable** does return a result. It sends computation in the cluster and get result back to calling node.
 
-Complete TODOs in **Step1_Callable** and make all tests in **Step1_CallableTest** pass.
+>Complete **TODO**s in **Step1_Callable** to fix all tests in **Step1_CallableTest**.
 
 
 ## Spot the difference
@@ -67,7 +68,7 @@ Try it !
 
 ## Solution
 
-- Case 1: value is computed **inside** the lambda, on the executing **server node**.
+- Case 1: value is computed **inside** the lambda, on the remote **server node**.
 
 - Case 2: value is computed **outside** the lambda, its value is fixed on **client node**, serialized and sent to **server node**.
 

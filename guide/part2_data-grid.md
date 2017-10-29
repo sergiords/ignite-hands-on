@@ -4,6 +4,8 @@
 
 In this part we will learn how to create and use different distributed **caches** in our cluster.
 
+Ignite ensures cache data is **serialized** and **partitioned** across server nodes and available to any node in cluster.
+
 
 ## Example
 
@@ -21,17 +23,15 @@ public class App {
         CacheConfiguration<Key, Value> configuration = new CacheConfiguration<>("my-cache");
 
         IgniteCache<Key, Value> cache = ignite.getOrCreateCache(configuration);
-
     }
-
 }
 ```
 
 ## Cache queries
 
-Cache can be queried by key or using SQL, Text or Scan (code) queries.
+Cache can be queried by key or using SQL, Text or Scan queries.
 
-Complete TODOs in **Step1_CacheQuery** class and  make all tests in **Step2_CacheQueryTest** pass.
+>Complete TODOs in **Step1_CacheQuery** to fix all tests in **Step2_CacheQueryTest**.
 
 
 ## Cache Modes
@@ -42,17 +42,14 @@ Cache entry distribution across server nodes can be adjusted by 3 means:
 - **Replicated Cache**: each entry is in one **primary node** and **n-1 backup nodes** (**n** is cluster size).
 - **Cache Backups**: each entry is in one **primary node** and **x backup nodes** (**x** is backup size).
 
-Complete TODOs in **Step2_CacheMode** class and  make all tests in **Step2_CacheModeTest** pass.
+>Complete TODOs in **Step2_CacheMode** to fix all tests in **Step2_CacheModeTest**.
 
 
 ## Compute affinity
 
-**Compute Affinity** allows sending computations only in nodes where **cache entries** are stored.
+**Compute Affinity** allows sending computations according to a **cache entry** location.
 
-Affinity is used to avoid cross-node (network) cache queries by sending computation only to relevant nodes.
-
-
-### Example
+Affinity avoids cross-node cache queries by **sending computations only to relevant nodes**. For example:
 
 ```java
 import org.apache.ignite.*;
@@ -68,28 +65,21 @@ public class App {
         cache.put("key2", "value2");
 
         String value = ignite.compute()
-            .affinityCall("my-cache", "key2", () -> cache.get("key2").toUpperCase());
-
+            .affinityCall("my-cache", "key2", () -> cache.get("key2"));
     }
-
 }
 ```
+Here Ignite does no network call on ``cache.get("key2")`` call because `affinityCall()` is **executed on node where `"key2"` is stored**.
 
-Here Ignite does no network call on ``cache.get("key2")`` call because `affinityCall` **executes code in node where `"key2"` is stored**.
 
-### Exercise
-
-Complete TODOS in **Step3_ComputeAffinity** class and make all tests in **Step3_ComputeAffinityTest** pass.
+>Complete TODOS in **Step3_ComputeAffinity** to fix all tests in **Step3_ComputeAffinityTest**.
 
 
 ## Data affinity
 
 **AffinityKey** allows grouping multiple cache entries in same nodes.
 
-Data is distributed across nodes with a specific key: **affinity key**, which differs from the key used for cache.
-
-
-### Example
+Data is distributed across nodes with a specific key: **affinity key**, which differs from the key used for cache. For example:
 
 ```java
 import org.apache.ignite.*;
@@ -114,12 +104,10 @@ public class App {
 
 Ignite ensures `key1` and `key2` are hosted on the same node since they are stored with same **affinity key**.
 
-`affinityCall` executes code where keys associated to `"group1"` **affinity key** are stored.
+`affinityCall()` is **executed on node where keys associated to `"group1"`** are stored.
 
 
-### Exercise
-
-Complete TODOS in **Step4_DataAffinity** class and make all tests in **Step2_DataAffinityTest** pass.
+>Complete TODOS in **Step4_DataAffinity** to fix all tests in **Step2_DataAffinityTest**.
 
 
 ## Spot the difference
@@ -138,25 +126,22 @@ public class App {
         IgniteCache<String, String> cache = ignite.getOrCreateCache("test");
 
         // Case 1
-        Collection<Integer> sizes1 = ignite.compute().broadcast(() -> cache.localSize(CachePeekMode.PRIMARY));
+        Collection<Integer> sizes1 = ignite.compute().broadcast(() -> cache.localSize());
 
         // Case 2
         Collection<Integer> sizes2 = new ArrayList<>();
         ignite.compute().broadcast(() -> sizes2.add(cache.localSize()));
-
     }
-
 }
 ```
-
 Try it !
 
 
 ## Solution
 
-- Case 1: each server node computes `cache#localSize` locally and each value is reduced in a single collection: **sizes1** in client node.
+- Case 1: each server node computes `cache.localSize()` and results are reduced by Ignite in a collection in client node.
 
-- Case 2: each server node computes `cache#localSize` locally but add size to **a copy** of the **sizes2** collection defined in client node.
+- Case 2: each server node computes `cache.localSize()` but results are added to **a copy** of the **sizes2** collection defined in client node. Original collection is never updated.
 
 
 [Home](../readme.md) | [Back](./part1_compute-grid.md) | [Next](part3_service-grid.md)
