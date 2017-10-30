@@ -30,7 +30,7 @@ Service deployment can be adjusted by 4 means:
 - **Custom service**: **x instances** are deployed in **every node** with **y** instances maximum per node.
 - **Affinity service**: service is deployed according to cache entry location (**service is collocated with data**)
 
->Complete **TODO**s in **Step3_ServiceGrid** to fix all tests in **Step3_ServiceGridTest**.
+>Complete **TODO**s in **Step1_ServiceGrid** to fix all tests in **Step1_ServiceGridTest**.
 
 
 [Home](../readme.md) | [Back](./part2_data-grid.md) | [Next](part4_messaging.md)

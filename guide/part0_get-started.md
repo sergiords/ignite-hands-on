@@ -60,7 +60,7 @@ A cluster can perfectly work with **server nodes** only. Using **client nodes** 
 >
 >    public static void main(String[] args) {
 >
->        Ignite ignite = Ignition.start();
+>        Ignite ignite = Config.igniteConfiguration();
 >
 >        ignite.compute().broadcast(() -> System.out.println("Hello World"));
 >    }

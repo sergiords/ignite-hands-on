@@ -31,7 +31,7 @@ public class App {
 
 Cache can be queried by key or using SQL, Text or Scan queries.
 
->Complete **TODO**s in **Step1_CacheQuery** to fix all tests in **Step2_CacheQueryTest**.
+>Complete **TODO**s in **Step1_CacheQuery** to fix all tests in **Step1_CacheQueryTest**.
 
 
 ## Cache Modes
@@ -86,6 +86,7 @@ import org.apache.ignite.*;
 import org.apache.ignite.cache.affinity.*;
 
 public class App {
+
     public static void main(String[] args) {
 
         Ignite ignite = Ignition.start();
@@ -107,7 +108,7 @@ Ignite ensures `key1` and `key2` are hosted on the same node since they are stor
 `affinityCall()` is **executed on node where keys associated to `"group1"`** are stored.
 
 
->Complete **TODO**s in **Step4_DataAffinity** to fix all tests in **Step2_DataAffinityTest**.
+>Complete **TODO**s in **Step4_DataAffinity** to fix all tests in **Step4_DataAffinityTest**.
 
 
 ## Spot the difference
