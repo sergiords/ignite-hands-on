@@ -36,15 +36,13 @@ class Step4_DataAffinityTest {
     }
 
     @TestFactory
-    @DisplayName("Data affinity")
-    List<DynamicTest> computeAffinity() {
+    @DisplayName("data affinity")
+    List<DynamicTest> dataAffinity() {
 
         Step4_DataAffinity step = new Step4_DataAffinity(ignite);
 
         String name = "my-data-affinity-cache";
         IgniteCache<Team, List<User>> cache = ignite.cache(name);
-
-        Team team42 = Data.teams().get(42);
 
         return asList(
 
@@ -54,6 +52,7 @@ class Step4_DataAffinityTest {
             }),
 
             dynamicTest("affinityKey() should return key for team and its country", () -> {
+                Team team42 = Data.teams().get(42);
                 AffinityKey<Team> result = step.affinityKey(team42);
                 assertThat(result).isNotNull();
                 assertThat(result.key()).isEqualTo(team42);
