@@ -77,7 +77,7 @@ Here Ignite does no network call on ``cache.get("key2")`` call because `affinity
 
 ## Data affinity
 
-**AffinityKey** allows grouping multiple cache entries in same nodes.
+**AffinityKey** allows grouping multiple cache entries in same node.
 
 Data is distributed across nodes with a specific key: **affinity key**, which differs from the key used for cache. For example:
 
@@ -103,7 +103,7 @@ public class App {
 }
 ```
 
-Ignite ensures `key1` and `key2` are hosted on the same node since they are stored with same **affinity key**.
+Ignite ensures `key1` and `key2` are hosted on the same node since they are stored with same **affinity key** - `"group1"`.
 
 `affinityCall()` is **executed on node where keys associated to `"group1"`** are stored.
 
