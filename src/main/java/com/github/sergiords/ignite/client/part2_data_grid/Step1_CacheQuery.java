@@ -33,7 +33,7 @@ public class Step1_CacheQuery {
         this.cache = ignite.getOrCreateCache(configuration);
     }
 
-    public void writeValues() {
+    public void populateCache() {
 
         List<Team> teams = Data.teams();
 

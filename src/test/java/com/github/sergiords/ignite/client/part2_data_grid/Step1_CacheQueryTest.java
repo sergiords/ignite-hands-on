@@ -46,7 +46,7 @@ public class Step1_CacheQueryTest {
             }),
 
             dynamicTest("should write 1000 values to cache", () -> {
-                step.writeValues();
+                step.populateCache();
                 assertThat(cache.size()).isEqualTo(1000);
             }),
 
