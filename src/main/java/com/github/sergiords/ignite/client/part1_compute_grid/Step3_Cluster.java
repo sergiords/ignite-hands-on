@@ -1,4 +1,4 @@
-package com.github.sergiords.ignite.client.part5_cluster;
+package com.github.sergiords.ignite.client.part1_compute_grid;
 
 import com.github.sergiords.ignite.server.ServerApp;
 import org.apache.ignite.Ignite;
@@ -9,11 +9,11 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class Step1_Cluster {
+public class Step3_Cluster {
 
     private final Ignite ignite;
 
-    public Step1_Cluster(Ignite ignite) {
+    public Step3_Cluster(Ignite ignite) {
         this.ignite = ignite;
     }
 

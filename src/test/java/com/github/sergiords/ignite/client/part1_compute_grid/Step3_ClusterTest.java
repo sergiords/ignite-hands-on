@@ -1,4 +1,4 @@
-package com.github.sergiords.ignite.client.part5_cluster;
+package com.github.sergiords.ignite.client.part1_compute_grid;
 
 import com.github.sergiords.ignite.server.ServerAppTest;
 import org.apache.ignite.Ignite;
@@ -13,15 +13,12 @@ import java.util.Collection;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(ServerAppTest.class)
-class Step1_ClusterTest {
+class Step3_ClusterTest {
 
-    private final Ignite ignite;
+    private final Step3_Cluster step;
 
-    private final Step1_Cluster step;
-
-    Step1_ClusterTest(Ignite ignite) {
-        this.ignite = ignite;
-        this.step = new Step1_Cluster(ignite);
+    Step3_ClusterTest(Ignite ignite) {
+        this.step = new Step3_Cluster(ignite);
     }
 
     @Test

@@ -65,4 +65,4 @@ For this hands on, only 2 events were enabled in **Config** class to illustrate 
 >Complete **TODO**s in **Step2_Event** to fix all tests in **Step2_EventTest**.
 
 
-[Home](../readme.md) | [Back](part3_service-grid.md) | [Next](part5_cluster.md)
+[Home](../readme.md) | [Back](part3_service-grid.md)

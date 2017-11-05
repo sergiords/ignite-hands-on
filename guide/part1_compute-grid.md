@@ -71,4 +71,32 @@ public class App {
 - Case 2: value is computed **outside** the lambda, its value is fixed on **client node**, serialized and sent to **server node**.
 
 
+## Cluster Nodes and Groups
+
+**ClusterNode** class represents **a node** in the cluster.
+
+**ClusterGroup** class represents **a set of nodes** in the cluster.
+
+Node and groups can be used to **restrict** the set of nodes where an operation is executed. They can be retrieved like this for example:
+```java
+import org.apache.ignite.*;
+import org.apache.ignite.cluster.*;
+
+public class App {
+
+    public static void main(String[] args) {
+
+        Ignite ignite = Ignition.start();
+
+        ClusterNode clusterNode = ignite.cluster().localNode();
+        ClusterGroup clusterGroup = ignite.cluster().forNode(clusterNode);
+
+        ignite.compute(clusterGroup).run(() -> System.out.println("Hello local node!"));
+    }
+}
+```
+
+>Complete **TODO**s in **Step3_Cluster** to fix all tests in **Step3_ClusterTest**.
+
+
 [Home](../readme.md) | [Back](part0_get-started.md) | [Next](./part2_data-grid.md)
