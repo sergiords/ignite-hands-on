@@ -8,7 +8,7 @@ import org.apache.ignite.IgniteCache;
 import org.apache.ignite.cache.affinity.Affinity;
 import org.apache.ignite.cluster.ClusterGroup;
 import org.apache.ignite.cluster.ClusterNode;
-import org.apache.ignite.lang.IgniteCallable;
+import org.apache.ignite.configuration.CacheConfiguration;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +21,6 @@ public class Step3_ComputeAffinity {
 
     private final Ignite ignite;
 
-    private final Affinity<Team> affinity;
-
     private final IgniteCache<Team, List<User>> cache;
 
     public Step3_ComputeAffinity(Ignite ignite) {
@@ -31,16 +29,14 @@ public class Step3_ComputeAffinity {
 
         /*
          * TODO:
-         * - create a cache named "my-compute-affinity-cache" (default mode is partitioned)
+         * - create a cache named "my-compute-affinity-cache"
          */
-        this.cache = ignite.getOrCreateCache(CACHE_NAME);
+        CacheConfiguration<Team, List<User>> configuration = new CacheConfiguration<>(CACHE_NAME);
 
-        /*
-         * TODO:
-         * - affinity function tells in which node cache entries are stored
-         * - use ignite.affinity(...) to get affinity function associated to this cache
-         */
-        this.affinity = ignite.affinity(CACHE_NAME);
+        this.cache = ignite.getOrCreateCache(configuration);
+    }
+
+    public void populateCache() {
 
         /*
          * TODO:
@@ -58,16 +54,27 @@ public class Step3_ComputeAffinity {
          * - use ignite.compute().affinityCall(...) to return user with most commits for the given team
          * - notice that cache.get(team) call does not require network since team is hosted on node where computation is sent
          */
-        return ignite.compute().affinityCall(CACHE_NAME, team, topCommitterSearch(team));
+
+        return ignite.compute()
+            .affinityCall(CACHE_NAME, team, () -> cache.get(team).stream().max(comparing(User::getCommits)));
+    }
+
+    public ClusterNode findNode(Team team) {
+
+        /*
+         * TODO:
+         * - affinity function tells in which node cache entries are stored
+         * - use ignite.affinity(...) to get affinity function associated to this cache
+         * - use affinity.mapKeyToNode(...) to get ClusterNode hosting the given team entry
+         */
+        Affinity<Team> affinity = ignite.affinity(CACHE_NAME);
+
+        return affinity.mapKeyToNode(team);
     }
 
     public Optional<User> findTopCommitterFullVersion(Team team) {
 
-        /*
-         * TODO:
-         * - use affinity.mapKeyToNode(...) to get ClusterNode hosting the given team entry
-         */
-        ClusterNode node = affinity.mapKeyToNode(team);
+        ClusterNode node = findNode(team);
 
         /*
          * TODO:
@@ -80,12 +87,9 @@ public class Step3_ComputeAffinity {
          * - use ignite.compute(clusterGroup).call(...) to return user with most commits for the given team
          * - notice this is the long version of ignite.compute().affinityCall(...)
          */
-        return ignite.compute(clusterGroup).call(topCommitterSearch(team));
-    }
 
-    private IgniteCallable<Optional<User>> topCommitterSearch(Team team) {
-
-        return () -> cache.get(team).stream().max(comparing(User::getCommits));
+        return ignite.compute(clusterGroup)
+            .call(() -> cache.get(team).stream().max(comparing(User::getCommits)));
     }
 
 }

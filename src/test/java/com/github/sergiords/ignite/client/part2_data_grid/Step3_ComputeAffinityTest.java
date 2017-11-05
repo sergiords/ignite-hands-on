@@ -36,32 +36,36 @@ class Step3_ComputeAffinityTest {
     }
 
     @TestFactory
-    @DisplayName("Should execute lambda with affinity (in server node hosting data as primary key)")
+    @DisplayName("compute affinity")
     List<DynamicTest> computeAffinity() {
 
         Step3_ComputeAffinity step = new Step3_ComputeAffinity(ignite);
 
         String name = "my-compute-affinity-cache";
         IgniteCache<Team, List<User>> cache = ignite.cache(name);
-        Affinity<Team> affinity = ignite.affinity(name);
 
         Team team42 = Data.teams().get(42);
-        ClusterNode team42Node = affinity.mapKeyToNode(team42);
-        String team42NodeName = team42Node.attribute("node.id");
 
         return asList(
 
-            dynamicTest("cache should have 1000 teams", () -> {
-                int result = cache.size();
-                assertThat(result).isEqualTo(1000);
+            dynamicTest("populateCache() should store 1000 teams in cache", () -> {
+                step.populateCache();
+                assertThat(cache.size()).isEqualTo(1000);
             }),
 
-            dynamicTest("findTopCommitter() should be executed on node " + team42NodeName, () -> {
+            dynamicTest("findTopCommitter() should find top committer", () -> {
                 Optional<User> result = step.findTopCommitter(team42);
                 assertThat(result).hasValueSatisfying(user -> assertThat(user.getId()).isEqualTo(423));
             }),
 
-            dynamicTest("findTopCommitterFullVersion() should be executed on node " + team42NodeName, () -> {
+            dynamicTest("findNode() should return node where team is stored", () -> {
+                Affinity<Team> affinity = ignite.affinity(name);
+                ClusterNode expected = affinity.mapKeyToNode(team42);
+                ClusterNode result = step.findNode(team42);
+                assertThat(result).isEqualTo(expected);
+            }),
+
+            dynamicTest("findTopCommitterFullVersion() should find top committer", () -> {
                 Optional<User> result = step.findTopCommitterFullVersion(team42);
                 assertThat(result).hasValueSatisfying(user -> assertThat(user.getId()).isEqualTo(423));
             })
