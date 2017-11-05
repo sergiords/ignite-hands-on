@@ -63,8 +63,6 @@ public class App {
 }
 ```
 
-Try it !
-
 
 ## Solution
 

@@ -1,6 +1,6 @@
 # Data Grid
 
-![img](img/partitioned-cache.png)
+![img](img/data-grid.png)
 
 In this part we will learn how to create and use different distributed **caches** in our cluster.
 
@@ -135,7 +135,6 @@ public class App {
     }
 }
 ```
-Try it !
 
 
 ## Solution
