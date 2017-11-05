@@ -7,4 +7,3 @@ Each part has its own minimalist example and a short explanation to help you get
 - [Data Grid](guide/part2_data-grid.md)
 - [Service Grid](guide/part3_service-grid.md)
 - [Messaging](guide/part4_messaging.md)
-- [Cluster](guide/part5_cluster.md)
