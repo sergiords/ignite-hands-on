@@ -37,7 +37,7 @@ An **IgniteRunnable** is executed on a server node without a result being return
 
 An **IgniteCallable** is executed on a server node but returns a result to calling node.
 
->Complete **TODO**s in **Step1_Callable** to fix all tests in **Step1_CallableTest**.
+>Complete **TODO**s in **Step2_Callable** to fix all tests in **Step2_CallableTest**.
 
 
 ## Spot the difference
