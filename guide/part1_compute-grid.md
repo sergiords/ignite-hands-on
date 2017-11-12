@@ -64,11 +64,9 @@ public class App {
 ```
 
 
-## Solution
-
-- Case 1: value is computed **inside** the lambda, on the remote **server node**.
-
-- Case 2: value is computed **outside** the lambda, its value is fixed on **client node**, serialized and sent to **server node**.
+>Solution
+>- Case 1: value is computed **inside** the lambda, on the remote **server node**.
+>- Case 2: value is computed **outside** the lambda, its value is fixed on **client node**, serialized, sent to **server node** and returned back to **client node**.
 
 
 ## Cluster Nodes and Groups

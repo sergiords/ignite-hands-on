@@ -69,7 +69,7 @@ public class App {
     }
 }
 ```
-Here Ignite does no network call on ``cache.get("key2")`` call because `affinityCall()` is **executed on node where `"key2"` is stored**.
+Here Ignite does no network call on `cache.get("key2")` call because `affinityCall()` is **executed on node where `"key2"` is stored**.
 
 
 >Complete **TODO**s in **Step3_ComputeAffinity** to fix all tests in **Step3_ComputeAffinityTest**.
@@ -105,7 +105,7 @@ public class App {
 
 Ignite ensures `key1` and `key2` are hosted on the same node since they are stored with same **affinity key** - `"group1"`.
 
-`affinityCall()` is **executed on node where keys associated to `"group1"`** are stored.
+Here Ignite does no network call on `cache.get("key1")` and `cache.get("key2")` calls because `affinityCall()` is **executed on node where keys associated to `"group1"`** are stored.
 
 
 >Complete **TODO**s in **Step4_DataAffinity** to fix all tests in **Step4_DataAffinityTest**.
@@ -139,7 +139,7 @@ public class App {
 
 ## Solution
 
-- Case 1: each server node computes `cache.localSize()` and results are reduced by Ignite in a collection in client node.
+- Case 1: each server node computes `cache.localSize()` and results are reduced by Ignite to a collection in client node.
 
 - Case 2: each server node computes `cache.localSize()` but results are added to **a copy** of the **sizes2** collection defined in client node. Original collection is never updated.
 
