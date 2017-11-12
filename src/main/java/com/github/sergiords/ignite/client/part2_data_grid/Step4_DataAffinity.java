@@ -52,7 +52,7 @@ public class Step4_DataAffinity {
 
         /*
          * TODO:
-         * - populate cache
+         * - populate cache (Affinity<Team> => List<User>)
          * - put all teams from the same country in the same node using affinityKey method defined above
          * - use Data.teams() to find teams
          * - use Data.users(team) to find users for a team

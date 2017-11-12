@@ -28,9 +28,9 @@ public class Step2_Event implements AutoCloseable {
 
         /*
          * TODO:
-         * - register a local event listener for remote events
-         * - the listener should simply send event.message() to ServerApp.send(...) and return true, to keep on listening to events
-         * - set remote filter to listen to EventType.EVT_CACHE_OBJECT_PUT types only
+         * - register an event listener for remote events
+         * - the listener should simply send event.shortDisplay() to ServerApp.send(...) and return true, to keep on listening to events
+         * - set remote filter to listen to EventType.EVT_CACHE_OBJECT_PUT event types only
          * - use ignite.events().remoteListen(...)
          * TIP:
          * - event types are explicitly enabled in Config class (performance issue #1)

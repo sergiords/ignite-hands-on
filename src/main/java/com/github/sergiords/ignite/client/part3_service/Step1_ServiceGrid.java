@@ -35,7 +35,7 @@ public class Step1_ServiceGrid {
          * - use ignite.services().serviceProxy(...)
          * TIP:
          * - this call is executed in a client node (started with tests)
-         * - since services are deployed on server nodes, proxy forwards calls those remote services
+         * - since services are deployed on server nodes, proxy forwards calls to those remote services
          */
         Computer computer = ignite.services().serviceProxy(SERVICE_NAME, Computer.class, false);
 

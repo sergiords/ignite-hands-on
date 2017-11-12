@@ -24,7 +24,7 @@ public class Step1_CacheQuery {
         /*
          * TODO:
          * - create a CacheConfiguration named "my-cache"
-         * - create a cache with this configuration
+         * - use ignite.getOrCreateCache(...) to create a cache with this configuration
          */
         CacheConfiguration<Integer, Team> configuration = new CacheConfiguration<>();
         configuration.setName("my-cache");
@@ -60,7 +60,7 @@ public class Step1_CacheQuery {
         /*
          * TODO:
          * - create a CacheEntryProcessor returning team name in uppercase
-         * - use cache.invoke(...) to return the processed name of the team with given id
+         * - use this processor and cache.invoke(...) to return processed team name for given id
          */
         CacheEntryProcessor<Integer, Team, String> processor = (entry, args) -> entry.getValue().getName().toUpperCase();
 
@@ -78,7 +78,8 @@ public class Step1_CacheQuery {
          */
         ScanQuery<Integer, Team> scanQuery = new ScanQuery<>((key, value) -> value.getName().endsWith(nameSearch));
 
-        return cache.query(scanQuery).getAll().stream()
+        return cache.query(scanQuery)
+            .getAll().stream()
             .map(Entry::getValue)
             .collect(toList());
     }
@@ -90,14 +91,15 @@ public class Step1_CacheQuery {
         /*
          * TODO:
          * - add @QueryTextField annotation to Team.name field to allow Lucene-based Text search on name
-         * - create a TextQuery finding teams matching 'nameSearch'
+         * - create a TextQuery finding teams matching 'nameSearch' (see tests to find what search criteria looks like)
          * - use cache.query(...) to return teams from cache matching this query
          * TIP:
-         * - define indexed types (cache key and cache value types) in cache configuration
+         * - define indexed types (cache key and cache value types) in cache configuration (see configuration.setIndexedTypes)
          */
         TextQuery<Integer, Team> textQuery = new TextQuery<>(Team.class, nameSearch);
 
-        return cache.query(textQuery).getAll().stream()
+        return cache.query(textQuery)
+            .getAll().stream()
             .map(Entry::getValue)
             .collect(toList());
     }
@@ -108,16 +110,17 @@ public class Step1_CacheQuery {
 
         /*
          * TODO:
-         * - add @QuerySqlField annotation to Team.name field to allow SQL query name searches
+         * - add @QuerySqlField annotation to Team.name field to allow SQL query name searches (see tests to find what search criteria looks like)
          * - create a SqlQuery finding teams where name is like 'nameSearch'
          * - query example: 'select * from team where name like ?'
          * - use cache.query(...) to return teams from cache matching this query
          * TIP:
-         * - define indexed types (cache key and cache value types) in cache configuration
+         * - define indexed types (cache key and cache value types) in cache configuration (see configuration.setIndexedTypes)
          */
         SqlQuery<Integer, Team> sqlQuery = new SqlQuery<Integer, Team>(Team.class, "name like ?").setArgs(nameSearch);
 
-        return cache.query(sqlQuery).getAll().stream()
+        return cache.query(sqlQuery)
+            .getAll().stream()
             .map(Entry::getValue)
             .collect(toList());
     }

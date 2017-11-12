@@ -63,6 +63,10 @@ public class Step2_CacheMode {
         return ignite.getOrCreateCache(configuration);
     }
 
+    /*
+     * After executing tests, look at test names to find how different cache configurations change cache entry sizes.
+     */
+
     public Integer getCacheSize(IgniteCache<Integer, String> cache) {
 
         /*
@@ -79,7 +83,7 @@ public class Step2_CacheMode {
          * TODO:
          * - return a collection containing cache size in each server node (all keys in each node)
          * - use cache.localSize(...)
-         * - ignite.compute().broadcast() to get cache size for each server node
+         * - use ignite.compute().broadcast() to get cache size for each server node
          */
         return ignite.compute().broadcast(() -> cache.localSize(CachePeekMode.ALL));
     }
@@ -90,7 +94,7 @@ public class Step2_CacheMode {
          * TODO:
          * - return a collection containing cache size in each server node (only primary keys in each node)
          * - use cache.localSize(...)
-         * - ignite.compute().broadcast() to get cache size for each server node
+         * - use ignite.compute().broadcast() to get cache size for each server node
          */
         return ignite.compute().broadcast(() -> cache.localSize(CachePeekMode.PRIMARY));
     }
@@ -101,7 +105,7 @@ public class Step2_CacheMode {
          * TODO:
          * - return a collection containing cache size in each server node (only backup keys in each node)
          * - use cache.localSize(...)
-         * - ignite.compute().broadcast() to get cache size for each server node
+         * - use ignite.compute().broadcast() to get cache size for each server node
          */
         return ignite.compute().broadcast(() -> cache.localSize(CachePeekMode.BACKUP));
     }

@@ -17,7 +17,7 @@ public class ClientApp {
         // Set this configuration to client mode (do not host data, do not run jobs)
         configuration.setClientMode(true);
 
-        // Use this client as a playground, when you are ready, go to part1 and launch unit tests
+        // Use ignite client as a playground, when you are ready, go to part1 and launch unit tests
 
         try (Ignite ignite = Ignition.start(configuration)) {
 
