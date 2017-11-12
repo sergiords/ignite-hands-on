@@ -137,11 +137,9 @@ public class App {
 ```
 
 
-## Solution
-
-- Case 1: each server node computes `cache.localSize()` and results are reduced by Ignite to a collection in client node.
-
-- Case 2: each server node computes `cache.localSize()` but results are added to **a copy** of the **sizes2** collection defined in client node. Original collection is never updated.
+>Solution
+>- Case 1: each server node computes `cache.localSize()` and results are reduced by Ignite to a collection in client node.
+>- Case 2: each server node computes `cache.localSize()` but results are added to **a copy** of the **sizes2** collection defined in client node. Original collection is never updated.
 
 
 [Home](../readme.md) | [Back](./part1_compute-grid.md) | [Next](part3_service-grid.md)
