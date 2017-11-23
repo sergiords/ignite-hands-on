@@ -1,19 +1,13 @@
 package com.github.sergiords.ignite.client.part2_data_grid;
 
-import com.github.sergiords.ignite.data.Data;
 import com.github.sergiords.ignite.data.Team;
 import com.github.sergiords.ignite.data.User;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.cache.affinity.AffinityKey;
-import org.apache.ignite.configuration.CacheConfiguration;
 
-import javax.cache.Cache;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static java.util.Comparator.comparing;
 
 public class Step4_DataAffinity {
 
@@ -33,9 +27,8 @@ public class Step4_DataAffinity {
          * - notice type for keys is AffinityKey<Team> not just Team
          * - use this configuration to create a cache
          */
-        CacheConfiguration<AffinityKey<Team>, List<User>> configuration = new CacheConfiguration<>(CACHE_NAME);
 
-        this.cache = ignite.getOrCreateCache(configuration);
+        this.cache = null;
     }
 
     public AffinityKey<Team> affinityKey(Team team) {
@@ -45,7 +38,7 @@ public class Step4_DataAffinity {
          * - return a new affinity key using team's country as the affinity key discriminator
          * - use new AffinityKey(...)
          */
-        return new AffinityKey<>(team, team.getCountry());
+        return null;
     }
 
     public void populateCache() {
@@ -57,7 +50,6 @@ public class Step4_DataAffinity {
          * - use Data.teams() to find teams
          * - use Data.users(team) to find users for a team
          */
-        Data.teams().forEach(team -> cache.put(affinityKey(team), Data.users(team)));
     }
 
     public Optional<User> findTopCommitterFromCountry(String country) {
@@ -73,17 +65,7 @@ public class Step4_DataAffinity {
          * - cache.localEntries() returns an Iterable... that's annoying
          * - use StreamSupport.stream(myIterator.spliterator(), false) to get a plain-old stream
          */
-        return ignite.compute().affinityCall(CACHE_NAME, country, () -> {
-
-            Iterable<Cache.Entry<AffinityKey<Team>, List<User>>> localEntries = cache.localEntries();
-
-            return StreamSupport.stream(localEntries.spliterator(), false)
-                .filter(entry -> entry.getKey().key().getCountry().equals(country))
-                .map(Cache.Entry::getValue)
-                .flatMap(List::stream)
-                .max(comparing(User::getCommits));
-
-        });
+        return null;
     }
 
 }
