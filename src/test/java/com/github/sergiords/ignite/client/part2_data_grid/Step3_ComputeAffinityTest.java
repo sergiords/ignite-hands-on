@@ -49,6 +49,8 @@ class Step3_ComputeAffinityTest {
         return asList(
 
             dynamicTest("populateCache() should store 1000 teams in cache", () -> {
+                assertThat(cache).isNotNull();
+                assertThat(cache.getName()).isEqualTo(name);
                 step.populateCache();
                 assertThat(cache.size()).isEqualTo(1000);
             }),
@@ -59,6 +61,8 @@ class Step3_ComputeAffinityTest {
             }),
 
             dynamicTest("findNode() should return node where team is stored", () -> {
+                assertThat(cache).isNotNull();
+                assertThat(cache.getName()).isEqualTo(name);
                 Affinity<Team> affinity = ignite.affinity(name);
                 ClusterNode expected = affinity.mapKeyToNode(team42);
                 ClusterNode result = step.findNode(team42);

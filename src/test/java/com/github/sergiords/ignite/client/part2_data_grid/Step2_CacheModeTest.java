@@ -77,28 +77,36 @@ public class Step2_CacheModeTest {
 
             // Write
             dynamicTest("should have 1000 entries", () -> {
+                assertThat(cache).isNotNull();
                 IntStream.range(0, expected).boxed().forEach(i -> cache.put(i, String.valueOf(i)));
                 assertThat(cache.size()).isEqualTo(expected);
             }),
 
             dynamicTest("should have cluster size: " + expected, () -> {
+                assertThat(cache).isNotNull();
                 Integer result = step1.getCacheSize(cache);
                 assertThat(result).isEqualTo(expected);
             }),
 
             dynamicTest("should have ALL entries: " + all, () -> {
-                int result = sum(step1.getCacheSizePerNode(cache));
-                assertThat(result).isEqualTo(all);
+                assertThat(cache).isNotNull();
+                Collection<Integer> cacheSize = step1.getCacheSizePerNode(cache);
+                assertThat(cacheSize).isNotNull();
+                assertThat(sum(cacheSize)).isEqualTo(all);
             }),
 
             dynamicTest("should have PRIMARY entries: " + expected, () -> {
-                int result = sum(step1.getCacheSizePerNodeForPrimaryKeys(cache));
-                assertThat(result).isEqualTo(expected);
+                assertThat(cache).isNotNull();
+                Collection<Integer> cacheSize = step1.getCacheSizePerNodeForPrimaryKeys(cache);
+                assertThat(cacheSize).isNotNull();
+                assertThat(sum(cacheSize)).isEqualTo(expected);
             }),
 
             dynamicTest("should have BACKUP entries: " + backups, () -> {
-                int result = sum(step1.getCacheSizePerNodeForBackupKeys(cache));
-                assertThat(result).isEqualTo(backups);
+                assertThat(cache).isNotNull();
+                Collection<Integer> cacheSize = step1.getCacheSizePerNodeForBackupKeys(cache);
+                assertThat(cacheSize).isNotNull();
+                assertThat(sum(cacheSize)).isEqualTo(backups);
             })
         );
     }
