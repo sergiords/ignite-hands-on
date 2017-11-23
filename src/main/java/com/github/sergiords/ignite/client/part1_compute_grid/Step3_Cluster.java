@@ -1,13 +1,9 @@
 package com.github.sergiords.ignite.client.part1_compute_grid;
 
-import com.github.sergiords.ignite.server.ServerApp;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.cluster.ClusterGroup;
 
 import java.util.Collection;
-import java.util.List;
-
-import static java.util.Arrays.asList;
 
 public class Step3_Cluster {
 
@@ -26,8 +22,7 @@ public class Step3_Cluster {
          * FYI:
          * - ClusterNode.attribute() method exposes system property of remote server node
          */
-        List<String> expectedNodeIds = asList("Server1", "Server2");
-        return ignite.cluster().forPredicate(node -> expectedNodeIds.contains(node.<String>attribute("node.id")));
+        return null;
     }
 
     public Collection<String> runInCustomClusterGroup() {
@@ -37,7 +32,7 @@ public class Step3_Cluster {
          * - run a computation returning Server.getName() for all nodes in previous custom cluster group
          * - use ignite.compute(...).broadcast(...)
          */
-        return ignite.compute(customClusterGroup()).broadcast(ServerApp::getName);
+        return null;
     }
 
 }
