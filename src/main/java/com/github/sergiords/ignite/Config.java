@@ -86,10 +86,8 @@ public class Config {
             "com.github.sergiords.ignite.client.*",
             "com.github.sergiords.ignite.client.part1_compute_grid.*",
             "com.github.sergiords.ignite.client.part2_data_grid.*",
-            "com.github.sergiords.ignite.client.part3_affinity.*",
             "com.github.sergiords.ignite.client.part3_service.*",
-            "com.github.sergiords.ignite.client.part4_messaging.*",
-            "com.github.sergiords.ignite.client.part5_cluster.*"
+            "com.github.sergiords.ignite.client.part4_messaging.*"
         );
 
         // disable metrics for hands on
