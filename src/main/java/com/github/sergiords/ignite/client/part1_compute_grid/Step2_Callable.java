@@ -1,11 +1,8 @@
 package com.github.sergiords.ignite.client.part1_compute_grid;
 
-import com.github.sergiords.ignite.server.ServerApp;
 import org.apache.ignite.Ignite;
 
 import java.util.Collection;
-
-import static java.util.Arrays.asList;
 
 public class Step2_Callable {
 
@@ -22,7 +19,7 @@ public class Step2_Callable {
          * - use ignite.compute().call(...) to return a computation result from one (random) server node
          * - return ServerApp.getName() in computation
          */
-        return ignite.compute().call(ServerApp::getName);
+        return null;
     }
 
     public Collection<String> getResultFromAllNodes() {
@@ -32,7 +29,7 @@ public class Step2_Callable {
          * - use ignite.compute().broadcast(...) to return computation results from all server nodes
          * - return ServerApp.getName() in computation
          */
-        return ignite.compute().broadcast(ServerApp::getName);
+        return null;
     }
 
     public Collection<String> getResultFromTwoNodes() {
@@ -43,10 +40,7 @@ public class Step2_Callable {
          * - return ServerApp.getName() in first computation
          * - return ServerApp.getInfo() in second computation
          */
-        return ignite.compute().call(asList(
-            ServerApp::getName,
-            ServerApp::getInfo
-        ));
+        return null;
     }
 
 }
