@@ -47,6 +47,8 @@ class Step4_DataAffinityTest {
         return asList(
 
             dynamicTest("populateCache() should store 1000 teams in cache", () -> {
+                assertThat(cache).isNotNull();
+                assertThat(cache.getName()).isEqualTo(name);
                 step.populateCache();
                 assertThat(cache.size()).isEqualTo(1000);
             }),
