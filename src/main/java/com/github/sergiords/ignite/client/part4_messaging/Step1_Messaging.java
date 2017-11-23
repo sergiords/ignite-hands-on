@@ -1,6 +1,5 @@
 package com.github.sergiords.ignite.client.part4_messaging;
 
-import com.github.sergiords.ignite.server.ServerApp;
 import org.apache.ignite.Ignite;
 
 import java.util.Optional;
@@ -25,10 +24,7 @@ public class Step1_Messaging implements AutoCloseable {
          * - a remote listener registers listeners in each node
          * - a local listener registers a listener in current node only (but listens to events in all nodes)
          */
-        listenerUUID = ignite.message().remoteListen("my-topic", (uuid, message) -> {
-            ServerApp.send(message);
-            return true;
-        });
+        listenerUUID = null;
     }
 
     public void sendMessage(String message) {
@@ -38,7 +34,6 @@ public class Step1_Messaging implements AutoCloseable {
          * - send given message to topic "my-topic"
          * - use ignite.messaging().send(...)
          */
-        ignite.message().send("my-topic", message);
     }
 
     @Override
