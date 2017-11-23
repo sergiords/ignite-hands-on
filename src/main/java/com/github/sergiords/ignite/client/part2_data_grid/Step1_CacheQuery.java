@@ -110,8 +110,8 @@ public class Step1_CacheQuery {
 
         /*
          * TODO:
-         * - add @QuerySqlField annotation to Team.name field to allow SQL query name searches (see tests to find what search criteria looks like)
-         * - create a SqlQuery finding teams where name is like 'nameSearch'
+         * - add @QuerySqlField annotation to Team.name field to allow SQL query name searches
+         * - create a SqlQuery finding teams where name is like 'nameSearch' (see tests to find what search criteria looks like)
          * - query example: 'select * from team where name like ?'
          * - use cache.query(...) to return teams from cache matching this query
          * TIP:
