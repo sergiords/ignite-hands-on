@@ -1,9 +1,7 @@
 package com.github.sergiords.ignite.client.part3_service;
 
 import com.github.sergiords.ignite.server.Computer;
-import com.github.sergiords.ignite.server.ComputerService;
 import org.apache.ignite.Ignite;
-import org.apache.ignite.services.ServiceConfiguration;
 
 public class Step1_ServiceGrid {
 
@@ -23,7 +21,6 @@ public class Step1_ServiceGrid {
          * - deploy a cluster singleton service named "my-service" using a new instance of ComputerService
          * - use ignite.services().deployClusterSingleton(...)
          */
-        ignite.services().deployClusterSingleton(SERVICE_NAME, new ComputerService());
     }
 
     public Integer runServiceUsingProxy(Integer x, Integer y) {
@@ -37,13 +34,13 @@ public class Step1_ServiceGrid {
          * - this call is executed in a client node (started with tests)
          * - since services are deployed on server nodes, proxy forwards calls to those remote services
          */
-        Computer computer = ignite.services().serviceProxy(SERVICE_NAME, Computer.class, false);
+        Computer computer = null;
 
         /*
          * TODO:
          * - use proxy to compute sum(x, y)
          */
-        return computer.sum(x, y);
+        return null;
     }
 
     public Integer runServiceInCallable(Integer x, Integer y) {
@@ -59,13 +56,13 @@ public class Step1_ServiceGrid {
              * - this call is executed in a server node (inside an IgniteCallable)
              * - if service is deployed on local node proxy uses local service otherwise it forwards calls to some other node service
              */
-            Computer computerProxy = ignite.services().serviceProxy(SERVICE_NAME, Computer.class, false);
+            Computer computerProxy = null;
 
             /*
              * TODO:
              * - use proxy to compute sum(x, y)
              */
-            return computerProxy.sum(x, y);
+            return null;
         });
     }
 
@@ -76,7 +73,6 @@ public class Step1_ServiceGrid {
          * - deploy a node singleton service named "my-service" using a new instance of ComputerService
          * - use ignite.services().deployNodeSingleton(...)
          */
-        ignite.services().deployNodeSingleton(SERVICE_NAME, new ComputerService());
     }
 
     public void deployCustomService() {
@@ -94,14 +90,7 @@ public class Step1_ServiceGrid {
          * TIP:
          * - notice this can be used to deploy same configurations as deployClusterSingleton() and deployNodeSingleton()
          */
-        ServiceConfiguration serviceConfiguration = new ServiceConfiguration();
-        serviceConfiguration.setName(SERVICE_NAME);
-        serviceConfiguration.setMaxPerNodeCount(2);
-        serviceConfiguration.setTotalCount(5);
-        serviceConfiguration.setService(new ComputerService());
-        serviceConfiguration.setNodeFilter(node -> !node.isClient());
 
-        ignite.services().deploy(serviceConfiguration);
     }
 
     public void deployAffinityService() {
@@ -110,7 +99,6 @@ public class Step1_ServiceGrid {
          * TODO:
          * - create a cache named "my-cache"
          */
-        ignite.getOrCreateCache("my-cache");
 
         /*
          * TODO:
@@ -118,7 +106,6 @@ public class Step1_ServiceGrid {
          * - this service should be deployed only on node where "Key42" is stored for cache named "my-cache"
          * - use ignite.services().deployKeyAffinitySingleton(...)
          */
-        ignite.services().deployKeyAffinitySingleton("my-service", new ComputerService(), "my-cache", "Key42");
     }
 
 }
