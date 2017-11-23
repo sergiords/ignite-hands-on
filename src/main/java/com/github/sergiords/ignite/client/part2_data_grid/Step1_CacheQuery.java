@@ -4,16 +4,8 @@ import com.github.sergiords.ignite.data.Data;
 import com.github.sergiords.ignite.data.Team;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
-import org.apache.ignite.cache.CacheEntryProcessor;
-import org.apache.ignite.cache.query.ScanQuery;
-import org.apache.ignite.cache.query.SqlQuery;
-import org.apache.ignite.cache.query.TextQuery;
-import org.apache.ignite.configuration.CacheConfiguration;
 
-import javax.cache.Cache.Entry;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 public class Step1_CacheQuery {
 
@@ -26,11 +18,7 @@ public class Step1_CacheQuery {
          * - create a CacheConfiguration named "my-cache"
          * - use ignite.getOrCreateCache(...) to create a cache with this configuration
          */
-        CacheConfiguration<Integer, Team> configuration = new CacheConfiguration<>();
-        configuration.setName("my-cache");
-        configuration.setIndexedTypes(Integer.class, Team.class);
-
-        this.cache = ignite.getOrCreateCache(configuration);
+        this.cache = null;
     }
 
     public void populateCache() {
@@ -41,7 +29,6 @@ public class Step1_CacheQuery {
          * TODO:
          * - put all teams in the cache using team.getId() as cache key
          */
-        teams.forEach(team -> cache.put(team.getId(), team));
     }
 
     public Team findByKey(Integer id) {
@@ -50,7 +37,7 @@ public class Step1_CacheQuery {
          * TODO:
          * - find team in cache by id
          */
-        return cache.get(id);
+        return null;
     }
 
     public String findByKeyAndProcess(Integer id) {
@@ -62,9 +49,8 @@ public class Step1_CacheQuery {
          * - create a CacheEntryProcessor returning team name in uppercase
          * - use this processor and cache.invoke(...) to return processed team name for given id
          */
-        CacheEntryProcessor<Integer, Team, String> processor = (entry, args) -> entry.getValue().getName().toUpperCase();
 
-        return cache.invoke(id, processor);
+        return null;
     }
 
     public List<Team> findByScanQuery(String nameSearch) {
@@ -76,12 +62,8 @@ public class Step1_CacheQuery {
          * - create a ScanQuery finding teams whose name ends with given nameSearch
          * - use cache.query(...) to return teams from cache matching this query
          */
-        ScanQuery<Integer, Team> scanQuery = new ScanQuery<>((key, value) -> value.getName().endsWith(nameSearch));
 
-        return cache.query(scanQuery)
-            .getAll().stream()
-            .map(Entry::getValue)
-            .collect(toList());
+        return null;
     }
 
     public List<Team> findByTextQuery(String nameSearch) {
@@ -96,12 +78,8 @@ public class Step1_CacheQuery {
          * TIP:
          * - define indexed types (cache key and cache value types) in cache configuration (see configuration.setIndexedTypes)
          */
-        TextQuery<Integer, Team> textQuery = new TextQuery<>(Team.class, nameSearch);
 
-        return cache.query(textQuery)
-            .getAll().stream()
-            .map(Entry::getValue)
-            .collect(toList());
+        return null;
     }
 
     public List<Team> findBySqlQuery(String nameSearch) {
@@ -117,12 +95,8 @@ public class Step1_CacheQuery {
          * TIP:
          * - define indexed types (cache key and cache value types) in cache configuration (see configuration.setIndexedTypes)
          */
-        SqlQuery<Integer, Team> sqlQuery = new SqlQuery<Integer, Team>(Team.class, "name like ?").setArgs(nameSearch);
 
-        return cache.query(sqlQuery)
-            .getAll().stream()
-            .map(Entry::getValue)
-            .collect(toList());
+        return null;
     }
 
 }
