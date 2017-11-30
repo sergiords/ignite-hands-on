@@ -20,9 +20,6 @@ public class ServerApp {
          * TODO:
          * - start an ignite instance with configuration from Config.igniteConfiguration()
          */
-        IgniteConfiguration configuration = Config.igniteConfiguration();
-
-        Ignition.start(configuration);
     }
 
     /*
