@@ -49,8 +49,6 @@ In this hands on, each test starts a new **client node** and sends compute queri
 
 A cluster can perfectly work with **server nodes** only. Using **client nodes** avoids restarting all **server nodes** every time a test is executed.
 
->Complete **TODO** in **ClientApp**.
->
 >Play around and execute some compute queries from **ClientApp** node. Try this for example:
 >
 >```java
