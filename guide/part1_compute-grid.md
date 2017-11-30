@@ -58,7 +58,7 @@ public class App {
 
         // Case 2
         String nodeId2 = System.getProperty("node.id");
-        String nodeId3 = ignite.compute().call(() -> nodeId);
+        String nodeId3 = ignite.compute().call(() -> nodeId2);
     }
 }
 ```
